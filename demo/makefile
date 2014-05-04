@@ -21,6 +21,7 @@ out.elf: $(OBJ)
 	$(CC) -o out.elf $(CFLAGS) $(OBJ)
 
 %.o : %.c
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clear:

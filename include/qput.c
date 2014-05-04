@@ -7,7 +7,8 @@
 	
 static const char digits[16] = "0123456789ABCDEF"; /* "GHIJKLMNOPQRSTUVWXYZ"; */
 	
-static void _puth(USCI_UART_info *uart, char n){ 
+static void _puth(USCI_UART_info *uart, uint8_t n){ 
+	n = (uint8_t) n; // force!
 	USCI_UART__putchar(uart, digits[n >> 4]);
 	USCI_UART__putchar(uart, digits[n & 0xf]);
 }
