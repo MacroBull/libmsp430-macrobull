@@ -7,6 +7,7 @@
 #include <stdint.h>
 
 #include <stdlib.h>
+#include <stdarg.h>
 
 #include "binutil/base64.h"
 
@@ -65,9 +66,9 @@ extern json_handle json_CreateStringObj(char *name, char *string);
 
 extern json_handle json_CreateBlobObj(char *name, uint8_t *blob, uint16_t len);
 
-extern json_handle json_CreateArrayObj(char *name, json_handle arr_head);
+extern json_handle json_CreateArrayObj(char *name, ...);
 
-extern json_handle json_CreateObjectObj(char *name, json_handle obj_head);
+extern json_handle json_CreateObjectObj(char *name, ...);
 
 extern uint16_t json_free(json_handle obj);
 extern uint16_t json_free_rude(json_handle obj);

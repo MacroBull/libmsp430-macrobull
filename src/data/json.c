@@ -12,7 +12,10 @@ inline char *itoa10R(char *buf, int16_t num){
 	char tmp[5], *p_tmp;
 	
 	p_tmp = tmp;
-	if (num < 0){
+	if (0 == num){
+		*buf++ = '0';
+	}
+	else if (num < 0){
 		*buf++ = '-';
 		num = -num;
 	};
@@ -107,9 +110,12 @@ json_handle json_CreateBlobObj(char *name, uint8_t *blob, uint16_t len){
 	return this;
 }
 
-json_handle json_CreateArrayObj(char *name, json_handle arr_head){
-	// Array object, start from arr_head
-	json_handle this, walk;
+json_handle json_CreateArrayObj(char *name, ...){
+	/* Array object from param(a0,a1,a2...NULL) (end with NULL)
+	 * this->[a0,a1,a2....an]
+	 */
+	json_handle this, next, prev;
+	va_list args;
 	
 	this = (json_handle)malloc(sizeof(json_obj));
 	
@@ -117,21 +123,27 @@ json_handle json_CreateArrayObj(char *name, json_handle arr_head){
 	
 	this->name = name;
 	this->type = JSON_ARRAY;
-	this->val_tar = arr_head;
 	
-	walk = arr_head;
-	
-	while (NULL != walk){
-		walk->type |= JSON_IN_ARRAY;
-		walk = walk -> next;
+	va_start(args, name);
+	prev = va_arg(args, json_handle);
+	this->val_tar = prev;
+	while (NULL != prev){
+		prev->type |= JSON_IN_ARRAY;
+		next = va_arg(args, json_handle);
+		prev -> next = next;
+		prev = next;
 	}
+	va_end(args);
 	
 	return this;
 }
 
-json_handle json_CreateObjectObj(char *name, json_handle obj_head){
-	// Object object, start from obj_head
-	json_handle this, walk;
+json_handle json_CreateObjectObj(char *name, ...){
+	/* Objects from param(a0,a1,a2...NULL) (end with NULL)
+	 * this->[a0,a1,a2....an]
+	 */
+	json_handle this, next, prev;
+	va_list args;
 	
 	this = (json_handle)malloc(sizeof(json_obj));
 	
@@ -139,14 +151,17 @@ json_handle json_CreateObjectObj(char *name, json_handle obj_head){
 	
 	this->name = name;
 	this->type = JSON_OBJECT;
-	this->val_tar = obj_head;
 	
-	walk = obj_head;
-	
-	while (NULL != walk){
-		walk->type |= JSON_IN_OBJECT;
-		walk = walk -> next;
+	va_start(args, name);
+	prev = va_arg(args, json_handle);
+	this->val_tar = prev;
+	while (NULL != prev){
+		prev->type |= JSON_IN_OBJECT;
+		next = va_arg(args, json_handle);
+		prev -> next = next;
+		prev = next;
 	}
+	va_end(args);
 	
 	return this;
 }
