@@ -50,7 +50,7 @@ uint16_t base64enc(uint8_t *buf, const uint8_t *s, uint16_t len){ // buff should
 		*(buf++) = '=';
 	};
 	
-	*(buf++) = '\0';
+	*buf = '\0';
 		
 	return (buf - bufStart);
 	
