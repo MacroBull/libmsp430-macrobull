@@ -58,24 +58,24 @@ typedef struct json_struct {
 
 typedef json_obj *json_handle;
 
-extern json_handle json_CreateValueObj(char *name, uint8_t type);
+extern json_handle json_createValueObj(char *name, uint8_t type);
 
-extern json_handle json_CreateIntObj(char *name, int16_t num);
+extern json_handle json_createIntObj(char *name, int16_t num);
 
-extern json_handle json_CreateStringObj(char *name, char *string);
+extern json_handle json_createStringObj(char *name, char *string);
 
-extern json_handle json_CreateBlobObj(char *name, uint8_t *blob, uint16_t len);
+extern json_handle json_createBlobObj(char *name, uint8_t *blob, uint16_t len);
 
-extern json_handle json_CreateArrayObj(char *name, ...);
+extern json_handle json_createArrayObj(char *name, ...);
 
-extern json_handle json_CreateObjectObj(char *name, ...);
+extern json_handle json_createObjectObj(char *name, ...);
 
 extern uint16_t json_free(json_handle obj);
 extern uint16_t json_free_rude(json_handle obj);
 
-extern json_handle json_arrayIndex(json_handle head, uint16_t index);
+extern json_handle json_arrayIndex(json_handle obj, uint16_t index);
 
-extern json_handle json_objectIndex(json_handle head, char *name);
+extern json_handle json_objectIndex(json_handle obj, char *name);
 
 extern uint16_t json_dump(char *buf, json_handle jObj);
 

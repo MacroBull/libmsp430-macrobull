@@ -34,10 +34,23 @@
 	}
 	
 	#pragma vector=USCI_A0_VECTOR
-	__interrupt void USCI_UART_RX_ISR_implement(){
+	__interrupt void USCI_A0_RX_ISR_implement(){
 		int exit_code;
 		if ( NULL != USCI_UART_RX_ISR_proxy ) {
 			exit_code = USCI_UART_RX_ISR_proxy(USCI_A0_VECTOR, UCA0RXBUF);
+		
+		if (exit_code>0)
+			__bis_SR_register_on_exit(exit_code);
+		if (exit_code<0)
+			__bic_SR_register_on_exit(-exit_code);
+		}
+	}
+	
+	#pragma vector=USCI_A1_VECTOR
+	__interrupt void USCI_A1_RX_ISR_implement(){
+		int exit_code;
+		if ( NULL != USCI_UART_RX_ISR_proxy ) {
+			exit_code = USCI_UART_RX_ISR_proxy(USCI_A1_VECTOR, UCA1RXBUF);
 		
 		if (exit_code>0)
 			__bis_SR_register_on_exit(exit_code);

@@ -50,7 +50,7 @@ inline void json_clearify(char *s){
 }
 */
 
-json_handle json_CreateValueObj(char *name, uint8_t type){
+json_handle json_createValueObj(char *name, uint8_t type){
 	// Object with type/value only
 	json_handle this;
 	
@@ -64,7 +64,7 @@ json_handle json_CreateValueObj(char *name, uint8_t type){
 	return this;
 }
 
-json_handle json_CreateIntObj(char *name, int16_t num){
+json_handle json_createIntObj(char *name, int16_t num){
 	// Object of int number
 	json_handle this;
 	
@@ -79,7 +79,7 @@ json_handle json_CreateIntObj(char *name, int16_t num){
 	return this;
 }
 
-json_handle json_CreateStringObj(char *name, char *string){
+json_handle json_createStringObj(char *name, char *string){
 	// Object of string
 	json_handle this;
 	
@@ -94,7 +94,7 @@ json_handle json_CreateStringObj(char *name, char *string){
 	return this;
 }
 
-json_handle json_CreateBlobObj(char *name, uint8_t *blob, uint16_t len){
+json_handle json_createBlobObj(char *name, uint8_t *blob, uint16_t len){
 	// Object of blob with size of len
 	json_handle this;
 	
@@ -110,7 +110,7 @@ json_handle json_CreateBlobObj(char *name, uint8_t *blob, uint16_t len){
 	return this;
 }
 
-json_handle json_CreateArrayObj(char *name, ...){
+json_handle json_createArrayObj(char *name, ...){
 	/* Array object from param(a0,a1,a2...NULL) (end with NULL)
 	 * this->[a0,a1,a2....an]
 	 */
@@ -138,7 +138,7 @@ json_handle json_CreateArrayObj(char *name, ...){
 	return this;
 }
 
-json_handle json_CreateObjectObj(char *name, ...){
+json_handle json_createObjectObj(char *name, ...){
 	/* Objects from param(a0,a1,a2...NULL) (end with NULL)
 	 * this->[a0,a1,a2....an]
 	 */
@@ -338,13 +338,13 @@ char *json_parseR(json_handle this, char *s){
 				s++;
 				tail = this;
 				while ('}' != *(s-1)){
-					next = json_CreateValueObj(NULL, JSON_NULL);
+					next = json_createValueObj(NULL, JSON_NULL);
 					s = json_parseR(next, s);
 					tail -> next = next;
 					tail = tail -> next;
 					tail -> type |= JSON_IN_OBJECT;
 				}
-				this->type |= JSON_OBJECT;
+				this->type = (this->type & JSON_ATTR_MASK) |JSON_OBJECT;
 				this->val_tar = this->next;
 				this->next = NULL;
 				break;
@@ -353,13 +353,13 @@ char *json_parseR(json_handle this, char *s){
 				s++;
 				tail = this;
 				while (']' != *(s-1)){
-					next = json_CreateValueObj(NULL, JSON_NULL);
+					next = json_createValueObj(NULL, JSON_NULL);
 					s = json_parseR(next, s);
 					tail -> next = next;
 					tail = tail -> next;
 					tail -> type |= JSON_IN_ARRAY;
 				}
-				this->type |= JSON_ARRAY;
+				this->type = (this->type & JSON_ATTR_MASK) | JSON_ARRAY;
 				this->val_tar = this->next;
 				this->next = NULL;
 				break;
@@ -375,7 +375,7 @@ char *json_parseR(json_handle this, char *s){
 				s = p_s +1;
 				break;
 				
-				CASE_JSON_NUM_CHARS: // handling int number, int16_t only
+			CASE_JSON_NUM_CHARS: // handling int number, int16_t only
 				this->type = (this->type & JSON_ATTR_MASK) | JSON_INT;
 				p_s = s+1;
 				while ((*p_s <='9')&&(*p_s>='0')) p_s++;
@@ -387,10 +387,7 @@ char *json_parseR(json_handle this, char *s){
 				break;
 				
 			case	':': // acknowledge of name, move from string
-				if (JSON_STRING == (this->type & JSON_VAL_MASK)){
-					this->name = this->val_tar;
-					//this->type &= JSON_ATTR_MASK;
-				}
+				this->name = this->val_tar;
 				s++;
 				break;
 			default: // maybe special values
@@ -408,7 +405,7 @@ char *json_parseR(json_handle this, char *s){
 json_handle json_parse(char *s){
 	// parse string to json object
 	json_handle this;
-	this = json_CreateValueObj(NULL, JSON_NULL);
+	this = json_createValueObj(NULL, JSON_NULL);
 	json_parseR(this, s);
 	return this;
 }
