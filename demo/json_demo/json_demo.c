@@ -14,7 +14,7 @@ char text[2048], *p, func;
 int pos;
 
 #define PERIOD_LENGTH 256
-#include "/tmp/data.c"
+#include "data.c"
 
 int f(const uint16_t ISR_vector, char c){ // "echo" function
 	

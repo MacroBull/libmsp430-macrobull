@@ -4,7 +4,7 @@
 #ifndef __CRC32_H
 #define __CRC32_H
 
-//#define __CRC32_DISABLE_TABLE
+#define __CRC32_DISABLE_TABLE
 
 #define CRC32_POLYNOMIAL 0xEDB88320L
 /*

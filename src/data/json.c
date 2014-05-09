@@ -8,7 +8,7 @@ inline char *strcpyR(char *dest, const char *source){
 }
 
 inline char *itoa10R(char *buf, int16_t num){
-	//  atoi base 10 with keeping the char pointer for next operation
+	//  itoa base 10 with keeping the char pointer for next operation
 	char tmp[5], *p_tmp;
 	
 	p_tmp = tmp;
@@ -57,9 +57,10 @@ json_handle json_createValueObj(char *name, uint8_t type){
 	this = (json_handle)malloc(sizeof(json_obj));
 	
 	this->next = NULL;
-	
-	this->name = name;
 	this->type = type;
+	this->val_int = 0; //
+	this->val_tar = NULL; //
+	this->name = name;
 	
 	return this;
 }
@@ -71,10 +72,10 @@ json_handle json_createIntObj(char *name, int16_t num){
 	this = (json_handle)malloc(sizeof(json_obj));
 	
 	this->next = NULL;
-	
-	this->name = name;
 	this->type = JSON_INT;
 	this->val_int = num;
+	this->val_tar = NULL; //
+	this->name = name;
 	
 	return this;
 }
@@ -86,26 +87,25 @@ json_handle json_createStringObj(char *name, char *string){
 	this = (json_handle)malloc(sizeof(json_obj));
 	
 	this->next = NULL;
-	
-	this->name = name;
 	this->type = JSON_STRING;
+	this->val_int = 0;
 	this->val_tar = string;
+	this->name = name;
 	
 	return this;
 }
 
-json_handle json_createBlobObj(char *name, uint8_t *blob, uint16_t len){
+json_handle json_createBlobObj(char *name, uint8_t *blob, int16_t len){
 	// Object of blob with size of len
 	json_handle this;
 	
 	this = (json_handle)malloc(sizeof(json_obj));
 	
 	this->next = NULL;
-	
-	this->val_int = len;
-	this->name = name;
 	this->type = JSON_BLOB;
+	this->val_int = len;
 	this->val_tar = blob;
+	this->name = name;
 	
 	return this;
 }
@@ -120,9 +120,9 @@ json_handle json_createArrayObj(char *name, ...){
 	this = (json_handle)malloc(sizeof(json_obj));
 	
 	this->next = NULL;
-	
-	this->name = name;
 	this->type = JSON_ARRAY;
+	this->val_int = 0;
+	this->name = name;
 	
 	va_start(args, name);
 	prev = va_arg(args, json_handle);
@@ -148,9 +148,9 @@ json_handle json_createObjectObj(char *name, ...){
 	this = (json_handle)malloc(sizeof(json_obj));
 	
 	this->next = NULL;
-	
-	this->name = name;
 	this->type = JSON_OBJECT;
+	this->val_int = 0;
+	this->name = name;
 	
 	va_start(args, name);
 	prev = va_arg(args, json_handle);
@@ -172,7 +172,7 @@ uint16_t json_free(json_handle obj){
 	uint16_t cnt = 0;
 	
 	while (obj){
-		free(obj->name);
+		if (NULL != obj->name) free(obj->name);
 		if ((obj->type & (JSON_OBJECT | JSON_ARRAY)) && (NULL != obj -> val_tar)) // crawl in children
 			cnt += json_free(obj->val_tar);
 		prev = obj;
@@ -191,11 +191,12 @@ uint16_t json_free_rude(json_handle obj){
 	uint16_t cnt = 0;
 	
 	while (obj){
-		free(obj->name);
-		if ((obj->type & (JSON_OBJECT | JSON_ARRAY)) && (NULL != obj -> val_tar)) // crawl in children
-			cnt += json_free_rude(obj->val_tar);
-		else
-			free(obj->val_tar);
+		if (NULL != obj->name) free(obj->name);
+		if (NULL != obj -> val_tar)
+			if (obj->type & (JSON_OBJECT | JSON_ARRAY)) // crawl in children
+				cnt += json_free_rude(obj->val_tar);
+			else
+				free(obj->val_tar);
 		prev = obj;
 		obj = obj->next;
 		free(prev);
@@ -236,10 +237,7 @@ uint16_t json_dump(char *buf, json_handle jObj){
 	
 	p_buf = buf;
 	
-	type = jObj->type;
-	
-	
-	do {
+	while (NULL != jObj) {
 		type = jObj->type;
 		
 		if ((type & JSON_IN_OBJECT) && (NULL != jObj->name)){
@@ -253,8 +251,8 @@ uint16_t json_dump(char *buf, json_handle jObj){
 		if (JSON_OBJECT & type){
 			//in case of object
 			*p_buf++ = '{';
-				p_buf += json_dump(p_buf, jObj->val_tar);
-				*p_buf++ = '}';
+			p_buf += json_dump(p_buf, jObj->val_tar);
+			*p_buf++ = '}';
 		}
 		else if (JSON_ARRAY & type){
 			//in case of array
@@ -278,13 +276,15 @@ uint16_t json_dump(char *buf, json_handle jObj){
 				break;
 			case	JSON_STRING:
 				*p_buf++ = '"';
-				p_buf = strcpyR(p_buf, jObj->val_tar);
+				if (NULL != jObj->val_tar) 
+					p_buf = strcpyR(p_buf, jObj->val_tar);
 				*p_buf++ = '"';
 				break;
 			case	JSON_BLOB:
 				//blob is base64 encoded
 				p_buf = strcpyR(p_buf, "\"data:;base64,");
-				p_buf += base64enc(p_buf, jObj->val_tar, jObj->val_int);
+				if (NULL != jObj->val_tar) 
+					p_buf += base64enc(p_buf, jObj->val_tar, jObj->val_int);
 				*p_buf++ = '"';
 				break;
 			default:
@@ -294,11 +294,11 @@ uint16_t json_dump(char *buf, json_handle jObj){
 		
 		jObj = (type & (JSON_IN_OBJECT | JSON_IN_ARRAY) ) ? jObj->next : NULL;
 		// linked objects would be directly dumped regardless of the parent object
-		if (jObj){
+		if (NULL != jObj){
 			*p_buf++ = ',';
 		};
 		
-	} while (jObj);
+	};
 	
 	*p_buf = '\0';
 	
@@ -344,9 +344,9 @@ char *json_parseR(json_handle this, char *s){
 					tail = tail -> next;
 					tail -> type |= JSON_IN_OBJECT;
 				}
+				this->next = NULL;
 				this->type = (this->type & JSON_ATTR_MASK) |JSON_OBJECT;
 				this->val_tar = this->next;
-				this->next = NULL;
 				break;
 				
 			case	'[': // handling array
@@ -388,6 +388,7 @@ char *json_parseR(json_handle this, char *s){
 				
 			case	':': // acknowledge of name, move from string
 				this->name = this->val_tar;
+				this->val_tar = NULL;
 				s++;
 				break;
 			default: // maybe special values

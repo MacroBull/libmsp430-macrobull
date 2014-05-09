@@ -22,14 +22,13 @@ extern inline char *itoa10R(char *buf, int16_t num);
 //extern inline void json_clearify(char *s);
 
 /* value /type */
-#define JSON_NULL	1
-#define JSON_INT	2
-#define JSON_STRING	3
-#define JSON_BLOB	4
+#define JSON_NULL	0
+#define JSON_INT	1
+#define JSON_STRING	2
+#define JSON_BLOB	3
 
-#define JSON_TRUE	5
-#define JSON_FALSE	6
-
+#define JSON_FALSE	0x40
+#define JSON_TRUE	0x41
 
 /* attribute/role*/
 #define JSON_IN_OBJECT	0x10
@@ -49,7 +48,7 @@ typedef struct json_struct {
 
 	uint8_t type;		/* The type of the item, as above. */
 
-	int16_t val_int;	/* The item's int number, if it is */
+	int16_t val_int;	/* The item's int number, or the length of blob, if it is */
 	void *val_tar;		/* The target: string, blob or child */
 	
 	char *name;			/* The item's name string. */
@@ -64,7 +63,7 @@ extern json_handle json_createIntObj(char *name, int16_t num);
 
 extern json_handle json_createStringObj(char *name, char *string);
 
-extern json_handle json_createBlobObj(char *name, uint8_t *blob, uint16_t len);
+extern json_handle json_createBlobObj(char *name, uint8_t *blob, int16_t len);
 
 extern json_handle json_createArrayObj(char *name, ...);
 
