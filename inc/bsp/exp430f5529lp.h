@@ -22,10 +22,10 @@ static uart_obj UART_TABLE[]={
 		.RXD =	_PERIP_UART0_RXD,
 		
 		.CTL0 =	(addr)_PERIP_UART0_CTL0_ADDR,
-		.CTL1 =	(addr)_PERIP_UART0_CTL1,
-		.BR0 =	(addr)_PERIP_UART0_BR0,
-		.BR1 =	(addr)_PERIP_UART0_BR1,
-		.MCTL =	(addr)_PERIP_UART0_MCTL,
+		.CTL1 =	(addr)_PERIP_UART0_CTL1_ADDR,
+		.BR0 =	(addr)_PERIP_UART0_BR0_ADDR,
+		.BR1 =	(addr)_PERIP_UART0_BR1_ADDR,
+		.MCTL =	(addr)_PERIP_UART0_MCTL_ADDR,
 		
 		.IE =	(addr)_PERIP_UART0_IE_ADDR,
 		.IFG =	(addr)_PERIP_UART0_IFG_ADDR,
@@ -61,10 +61,10 @@ static uart_obj UART_TABLE[]={
 		.RXD =	_PERIP_UART1_RXD,
 		
 		.CTL0 =	(addr)_PERIP_UART1_CTL0_ADDR,
-		.CTL1 =	(addr)_PERIP_UART1_CTL1,
-		.BR0 =	(addr)_PERIP_UART1_BR0,
-		.BR1 =	(addr)_PERIP_UART1_BR1,
-		.MCTL =	(addr)_PERIP_UART1_MCTL,
+		.CTL1 =	(addr)_PERIP_UART1_CTL1_ADDR,
+		.BR0 =	(addr)_PERIP_UART1_BR0_ADDR,
+		.BR1 =	(addr)_PERIP_UART1_BR1_ADDR,
+		.MCTL =	(addr)_PERIP_UART1_MCTL_ADDR,
 		
 		.IE =	(addr)_PERIP_UART1_IE_ADDR,
 		.IFG =	(addr)_PERIP_UART1_IFG_ADDR,
@@ -126,5 +126,89 @@ static uart_handle UART1 = &UART_TABLE[1];
 // };
 // 
 // static PWM_HANDLE PWM0 = &PWM_TABLE[0];
+
+//////////////i2c////////////////////
+
+#define I2C_CNT _PERIP_I2C_CNT
+
+#include "i2c_obj.h"
+#include "i2c.h"
+
+static i2c_obj I2C_TABLE[]={
+	{
+		.XD_PORT_SEL =	(addr)_PERIP_I2C0_XD_PORT_SEL_ADDR,
+		.XD_PORT_SEL2 =	(addr)_PERIP_I2C0_XD_PORT_SEL2_ADDR,
+		
+		.SCL =	_PERIP_I2C0_SCL,
+		.SDA =	_PERIP_I2C0_SDA,
+		
+		.CTL0 =	(addr)_PERIP_I2C0_CTL0_ADDR,
+		.CTL1 =	(addr)_PERIP_I2C0_CTL1_ADDR,
+		.BR0 =	(addr)_PERIP_I2C0_BR0_ADDR,
+		.BR1 =	(addr)_PERIP_I2C0_BR1_ADDR,
+// 		.MCTL =	(addr)_PERIP_I2C0_MCTL,
+		
+		.IE =	(addr)_PERIP_I2C0_IE_ADDR,
+		.IFG =	(addr)_PERIP_I2C0_IFG_ADDR,
+		.STAT = (addr)_PERIP_I2C0_STAT_ADDR,
+		
+		.OA = (addr16)_PERIP_I2C0_OA_ADDR,
+		.SA = (addr16)_PERIP_I2C0_SA_ADDR,
+		
+		.RXIE =	_PERIP_I2C0_RXIE,
+		.TXIFG =	_PERIP_I2C0_TXIFG,
+		.RXIFG =	_PERIP_I2C0_RXIFG,
+		
+		.TXBUF =	(addr)_PERIP_I2C0_TXBUF_ADDR,
+		.RXBUF =	(addr)_PERIP_I2C0_RXBUF_ADDR,
+		
+		.ISR_vector =	_PERIP_I2C0_ISR_VECTOR,
+		
+		.XLED_PORT_DIR =	(addr)PADIR_,
+		.XLED_PORT_OUT =	(addr)PAOUT_,
+		
+		.XLED =	BIT0,
+		
+	},
+	{
+		.XD_PORT_SEL =	(addr)_PERIP_I2C1_XD_PORT_SEL_ADDR,
+		.XD_PORT_SEL2 =	(addr)_PERIP_I2C1_XD_PORT_SEL2_ADDR,
+		
+		.SCL =	_PERIP_I2C1_SCL,
+		.SDA =	_PERIP_I2C1_SDA,
+		
+		.CTL0 =	(addr)_PERIP_I2C1_CTL0_ADDR,
+		.CTL1 =	(addr)_PERIP_I2C1_CTL1_ADDR,
+		.BR0 =	(addr)_PERIP_I2C1_BR0_ADDR,
+		.BR1 =	(addr)_PERIP_I2C1_BR1_ADDR,
+		// 		.MCTL =	(addr)_PERIP_I2C1_MCTL,
+		
+		.IE =	(addr)_PERIP_I2C1_IE_ADDR,
+		.IFG =	(addr)_PERIP_I2C1_IFG_ADDR,
+		.STAT = (addr)_PERIP_I2C1_STAT_ADDR,
+		
+		.OA = (addr16)_PERIP_I2C1_OA_ADDR,
+		.SA = (addr16)_PERIP_I2C1_SA_ADDR,
+		
+		.RXIE =	_PERIP_I2C1_RXIE,
+		.TXIFG =	_PERIP_I2C1_TXIFG,
+		.RXIFG =	_PERIP_I2C1_RXIFG,
+		
+		.TXBUF =	(addr)_PERIP_I2C1_TXBUF_ADDR,
+		.RXBUF =	(addr)_PERIP_I2C1_RXBUF_ADDR,
+		
+		.ISR_vector =	_PERIP_I2C1_ISR_VECTOR,
+		
+		.XLED_PORT_DIR =	(addr)(PBDIR_+1),
+		.XLED_PORT_OUT =	(addr)(PBOUT_+1),
+		
+		.XLED =	BIT7,
+	}
+};
+
+
+static i2c_handle I2C0 = &I2C_TABLE[0];
+static i2c_handle I2C1 = &I2C_TABLE[1];
+
 
 #endif

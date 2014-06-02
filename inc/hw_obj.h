@@ -22,49 +22,7 @@ typedef void (*_PERIP_CTL_FUNC)(void *obj);
 // typedef int (*USCI_UART_RX_ISR)(const uint16_t ISR_vector, char c);
 
 /*
-typedef struct {
-	
-	const addr XD_PORT_SEL, XD_PORT_SEL2;
-	const uint8_t TXD, RXD;
-	
-	const addr CTL0, CTL1, BR0, BR1, MCTL;
-	const addr IE, IFG;
-	const uint8_t RXIE, TXIFG, RXIFG;
-	const addr TXBUF, RXBUF;
-	
-	const uint16_t ISR_vector;
-	
-	addr XLED_PORT_DIR, XLED_PORT_OUT;
-	uint8_t TXLED, RXLED;
-	
-	USCI_UART_RX_ISR rx_isr;
-	
-	VTable *pVTable;
-	
-} USCI_UART_info;
 
-typedef struct {
-	
-	const addr XD_PORT_SEL, XD_PORT_SEL2;
-	const uint8_t SCL, SDA;
-	
-	const addr CTL0, CTL1, BR0, BR1; //, MCTL;
-	const addr IE, IFG, STAT;
-	const addr16 OA, SA;
-	const uint8_t TXIE, RXIE, TXIFG, RXIFG;
-	const addr TXBUF, RXBUF;
-	
-	const uint16_t ISR_vector;
-	
-	addr XLED_PORT_DIR, XLED_PORT_OUT;
-	
-	uint8_t XLED;
-	
-//	USCI_I2C_RX_ISR rx_isr;
-	
-	VTable *pVTable;
-	
-} USCI_I2C_info;
 
 
 typedef struct {
