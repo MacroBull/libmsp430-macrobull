@@ -15,6 +15,7 @@
 #include "misc.h"
 #include "uart.h"
 #include "qput.h"
+#include "qprintf.h"
 
 #define ZEROPAD 1	  /* pad with zero */
 #define SIGN	2	  /* unsigned/signed int */
@@ -363,7 +364,7 @@ int sprintf(char *buf, const char *fmt, ...){
 	
 }
  
-int qprintf(USCI_UART_info *uart, const char *fmt, ...){
+int qprintf(uart_handle uart, const char *fmt, ...){
 	char printf_buf[PRINT_BUF_SIZE];
 	va_list args;
 	uint16_t printed;

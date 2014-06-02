@@ -1,44 +1,43 @@
 
 #include "misc.h"
+#include "qput.h"
 #include "uart.h"
 
 
 /* we are called with base 8, 10 or 16, only, thus don't need "G..."  */
 	
-static const char digits[16] = "0123456789ABCDEF"; /* "GHIJKLMNOPQRSTUVWXYZ"; */
-	
-static void _puth(USCI_UART_info *uart, uint8_t n){ 
+static void _puth(uart_handle uart, uint8_t n){ 
 	n = (uint8_t) n; // force!
-	USCI_UART__putchar(uart, digits[n >> 4]);
-	USCI_UART__putchar(uart, digits[n & 0xf]);
+	uart__putchar(uart, digits[n >> 4]);
+	uart__putchar(uart, digits[n & 0xf]);
 }
 
-static void _puts(USCI_UART_info *uart, char *s){
+static void _puts(uart_handle uart, char *s){
 	while (*s){
-		USCI_UART__putchar(uart, *s);
+		uart__putchar(uart, *s);
 		s++;
 	}
 }
 
 
 
-void qputc(USCI_UART_info *uart, char n){
+void qputc(uart_handle uart, char n){
 	/* put byte in char */
-	USCI_UART_TXLED_on(uart);
-	USCI_UART__putchar(uart, n);
-	USCI_UART_TXLED_off(uart);
+	uart_TXLED_on(uart);
+	uart__putchar(uart, n);
+	uart_TXLED_off(uart);
 }
 
-void qputh(USCI_UART_info *uart, char n){
+void qputh(uart_handle uart, char n){
 	/* put byte in hex */
-	USCI_UART_TXLED_on(uart);
+	uart_TXLED_on(uart);
 	_puth(uart, n);
-	USCI_UART_TXLED_off(uart);
+	uart_TXLED_off(uart);
 }
 
-void qputs(USCI_UART_info *uart, char *s){
+void qputs(uart_handle uart, char *s){
 	/* put string */
-	USCI_UART_TXLED_on(uart);
+	uart_TXLED_on(uart);
 	_puts(uart, s);
-	USCI_UART_TXLED_off(uart);
+	uart_TXLED_off(uart);
 }
