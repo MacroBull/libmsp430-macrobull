@@ -8,20 +8,25 @@ My MSP430 lib
 
 * PWM object makes PWM settings simple, with SPWM data preseted.
 
+* Easy to use Timer setting and callbacks, support many events in various overflow * periods
+
 * Useful binary-ascii tools: CRC32, CRC16, base64(encode).
 
-* Code effecient and easy to use qprint.c printf implementation, working with UART interface profiles.
+* Code effecient and easy to use "qprint.c" printf implementation, working with UART interface profiles.
 
-* Some tiny and simple pinosc implementation will be presented in recent.
+* a tiny pinosc implementation (on working).
 
 
-Below is old description and will be changed to new framework (branch next?)
---------
-Includes 7 segment LED, ADC10 for MSP430Gxx5x, DCO auto calculation for MSP430Gx, I2C master mode, PWM over TimerA3, uart with qput and qprintf(quick maybe).
+----------------------
 
-PWM, I2C and UART are "object-oriented structed" and interface setting can be edited in <a href="include/dev.h">dev.h</a> according to hardware or application specification. It is possible to change the device or adding interface like soft uart without many edit on application codes.
+Library Demo
 
-I'm also trying to refine an interrupt proxy for callback funcitions from various interface so that coding would be very easy; 
-<a href="demo/uart_demo.c">an demo for uart</a> works quite well now.
+* I2C
 
-<a href="include/dev.h">dev.h</a> has defined some interface for Launchpad and MSP430F5529 Value Line Experience boards already.
+* JSON
+
+* Timer/Event
+
+* UART
+
+All demos are tested on MSPGCC 4.7.0 and CCS 6.0.0
