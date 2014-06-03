@@ -32,7 +32,7 @@ int16_t f3(uint16_t vector, int16_t count){ // flash red LED for raw callback
 }
 
 
-_ISR_callback_16 callback_list[] = {f2, f3, NULL}; // raw callback list, assure it end with NULL
+isr_callback_16 callback_list[] = {f2, f3, NULL}; // raw callback list, assure it end with NULL
 
 event_obj event_list[] = {
 	{

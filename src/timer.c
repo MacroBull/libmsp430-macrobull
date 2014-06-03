@@ -48,7 +48,7 @@ int16_t timer_event_callbackHandler(uint16_t vector, int16_t ctr){
 }
 
 
-_ISR_callback_16 timer_event_callbackPreset[] = { timer_event_callbackHandler, NULL};
+isr_callback_16 timer_event_callbackPreset[] = { timer_event_callbackHandler, NULL};
 
 void timer_event_set(timer_handle this, uint8_t event_cnt, event_handle events){
 	// this will overide Timerx_X1_ISR_callbacks settings

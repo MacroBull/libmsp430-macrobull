@@ -17,7 +17,7 @@ int16_t f0(uint16_t v, int8_t c){
 	return 0;
 }
 
-_ISR_callback_8 rx_list[]={f0,NULL};
+isr_callback_8 rx_list[]={f0,NULL};
 
 void main(){
 	

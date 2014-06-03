@@ -5,11 +5,11 @@
 //////////////////USCI_UART//////////////////////////
 #ifdef USCI_A0_VECTOR
 
-_ISR_callback_8 *USCI_A0_ISR_callbacks = NULL;
+isr_callback_8 *USCI_A0_ISR_callbacks = NULL;
 #pragma vector=USCI_A0_VECTOR
 __interrupt void USCI_A0_VECTOR_ISR_wrapper(){
 	int16_t exit_code;
-	_ISR_callback_8 *callback = USCI_A0_ISR_callbacks;
+	isr_callback_8 *callback = USCI_A0_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((USCI_A0_VECTOR << 8)+ UCA0IV, UCA0RXBUF);
 		callback++;
@@ -29,11 +29,11 @@ __interrupt void USCI_A0_VECTOR_ISR_wrapper(){
 
 #ifdef USCI_A1_VECTOR
 
-_ISR_callback_8 *USCI_A1_ISR_callbacks = NULL;
+isr_callback_8 *USCI_A1_ISR_callbacks = NULL;
 #pragma vector=USCI_A1_VECTOR
 __interrupt void USCI_A1_VECTOR_ISR_wrapper(){
 	int16_t exit_code;
-	_ISR_callback_8 *callback = USCI_A1_ISR_callbacks;
+	isr_callback_8 *callback = USCI_A1_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((USCI_A1_VECTOR << 8)+ UCA1IV, UCA1RXBUF);
 		callback++;
@@ -54,12 +54,12 @@ __interrupt void USCI_A1_VECTOR_ISR_wrapper(){
 
 #ifdef TIMER0_A0_VECTOR
 
-_ISR_callback_16 *TIMER0_A0_ISR_callbacks = NULL;
+isr_callback_16 *TIMER0_A0_ISR_callbacks = NULL;
 #pragma vector=TIMER0_A0_VECTOR
 __interrupt void TIMER0_A0_ISR_wrapper(void)
 {
 	int16_t exit_code;
-	_ISR_callback_16 *callback = TIMER0_A0_ISR_callbacks;
+	isr_callback_16 *callback = TIMER0_A0_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((TIMER0_A0_VECTOR << 8), TA0R);
 		callback++;
@@ -74,12 +74,12 @@ __interrupt void TIMER0_A0_ISR_wrapper(void)
 	}
 }
 
-_ISR_callback_16 *TIMER0_A1_ISR_callbacks = NULL;
+isr_callback_16 *TIMER0_A1_ISR_callbacks = NULL;
 #pragma vector=TIMER0_A1_VECTOR
 __interrupt void TIMER0_A1_ISR_wrapper(void)
 {
 	int16_t exit_code;
-	_ISR_callback_16 *callback = TIMER0_A1_ISR_callbacks;
+	isr_callback_16 *callback = TIMER0_A1_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((TIMER0_A1_VECTOR << 8) + TA0IV, TA0R);
 		callback++;
@@ -97,12 +97,12 @@ __interrupt void TIMER0_A1_ISR_wrapper(void)
 #endif
 #ifdef TIMER1_A0_VECTOR
 
-_ISR_callback_16 *TIMER1_A0_ISR_callbacks = NULL;
+isr_callback_16 *TIMER1_A0_ISR_callbacks = NULL;
 #pragma vector=TIMER1_A0_VECTOR
 __interrupt void TIMER1_A0_ISR_wrapper(void)
 {
 	int16_t exit_code;
-	_ISR_callback_16 *callback = TIMER1_A0_ISR_callbacks;
+	isr_callback_16 *callback = TIMER1_A0_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((TIMER1_A0_VECTOR << 8), TA1R);
 		callback++;
@@ -117,12 +117,12 @@ __interrupt void TIMER1_A0_ISR_wrapper(void)
 	}
 }
 
-_ISR_callback_16 *TIMER1_A1_ISR_callbacks = NULL;
+isr_callback_16 *TIMER1_A1_ISR_callbacks = NULL;
 #pragma vector=TIMER1_A1_VECTOR
 __interrupt void TIMER1_A1_ISR_wrapper(void)
 {
 	int16_t exit_code;
-	_ISR_callback_16 *callback = TIMER1_A1_ISR_callbacks;
+	isr_callback_16 *callback = TIMER1_A1_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((TIMER1_A1_VECTOR << 8) + TA1IV, TA0R);
 		callback++;
@@ -140,12 +140,12 @@ __interrupt void TIMER1_A1_ISR_wrapper(void)
 #endif
 #ifdef TIMER2_A0_VECTOR
 
-_ISR_callback_16 *TIMER2_A0_ISR_callbacks = NULL;
+isr_callback_16 *TIMER2_A0_ISR_callbacks = NULL;
 #pragma vector=TIMER2_A0_VECTOR
 __interrupt void TIMER2_A0_ISR_wrapper(void)
 {
 	int16_t exit_code;
-	_ISR_callback_16 *callback = TIMER2_A0_ISR_callbacks;
+	isr_callback_16 *callback = TIMER2_A0_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((TIMER2_A0_VECTOR << 8), TA2R);
 		callback++;
@@ -160,12 +160,12 @@ __interrupt void TIMER2_A0_ISR_wrapper(void)
 	}
 }
 
-_ISR_callback_16 *TIMER2_A1_ISR_callbacks = NULL;
+isr_callback_16 *TIMER2_A1_ISR_callbacks = NULL;
 #pragma vector=TIMER2_A1_VECTOR
 __interrupt void TIMER2_A1_ISR_wrapper(void)
 {
 	int16_t exit_code;
-	_ISR_callback_16 *callback = TIMER2_A1_ISR_callbacks;
+	isr_callback_16 *callback = TIMER2_A1_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((TIMER2_A1_VECTOR << 8) + TA2IV, TA0R);
 		callback++;
@@ -186,12 +186,12 @@ __interrupt void TIMER2_A1_ISR_wrapper(void)
 
 #ifdef TIMERB0_VECTOR
 
-_ISR_callback_16 *TIMERB0_ISR_callbacks = NULL;
+isr_callback_16 *TIMERB0_ISR_callbacks = NULL;
 #pragma vector=TIMERB0_VECTOR
 __interrupt void TIMERB0_ISR_wrapper(void)
 {
 	int16_t exit_code;
-	_ISR_callback_16 *callback = TIMERB0_ISR_callbacks;
+	isr_callback_16 *callback = TIMERB0_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((TIMERB0_VECTOR << 8), TB0R);
 		callback++;
@@ -206,12 +206,12 @@ __interrupt void TIMERB0_ISR_wrapper(void)
 	}
 }
 
-_ISR_callback_16 *TIMERB1_ISR_callbacks = NULL;
+isr_callback_16 *TIMERB1_ISR_callbacks = NULL;
 #pragma vector=TIMERB1_VECTOR
 __interrupt void TIMERB1_ISR_wrapper(void)
 {
 	int16_t exit_code;
-	_ISR_callback_16 *callback = TIMERB1_ISR_callbacks;
+	isr_callback_16 *callback = TIMERB1_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((TIMERB1_VECTOR << 8) + TB0IV, TA0R);
 		callback++;
