@@ -16,6 +16,8 @@ My MSP430 lib
 
 * a tiny pinosc implementation (on working).
 
+* In-place DCO frequency parameter calculation, UCS for F5xxx, F6xxx / DCO for x2xxx.
+
 
 ----------------------
 

@@ -1,34 +1,35 @@
-####
 TARGET = msp430f5529
-BOARD = EXP430F5529
+GLB_DFN = RELEASE
+OBJ = f5529lp_demo.o isr_wrapper.o uart.o qput.o binutil/base64.o data/json.o binutil/checksum/crc32.o
+
 CC = msp430-gcc
-VPATH = /home/macrobull/lib/msp430/src
-export CPATH = /home/macrobull/lib/msp430/include
-CFLAGS = -mmcu=$(TARGET) -D "_DEV_$(BOARD)" -g
-OBJ = json_demo.o uart.o interrupt_proxy.o qput.o binutil/base64.o data/json.o binutil/checksum/crc32.o
+VPATH = ${LIBMSP430_MACROBULL}/src
+export CPATH = ${LIBMSP430_MACROBULL}/inc
+CFLAGS = -mmcu=$(TARGET) -Wall -D $(GLB_DFN) -g
 
-main: clean clear out.elf
 
-debug: main
+build: clean out.elf
+
+debug: build
 	msp430-objdump -D out.elf > asm.asm
 
 
-flash: out.elf
+install: out.elf
 	echo "opt fet_block_size 1024" > ~/.mspdebug
-	-mspdebug tilib -d /dev/ttyACM0 "prog out.elf"
+# 	echo "opt fet_block_size 256" > ~/.mspdebug
+	mspdebug-tilib "prog out.elf"
 
 
 out.elf: $(OBJ)
 	$(CC) -o out.elf $(CFLAGS) $(OBJ)
 
+
 %.o : %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-clear:
-	clear
-
 clean:
-	-rm -r out.elf
+	-rm out.elf
 	-find -name "*.o" -print -exec rm {} \;
-	#-rm $(VPATH)/*.o
+	echo ${LIBMSP430_MACROBULL}/inc > .kdev_include_paths   # init for include paths
+	echo "/opt/cross/msp430/include" >> .kdev_include_paths   # init for include paths
