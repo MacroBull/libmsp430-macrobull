@@ -17,39 +17,27 @@
 #include "qput.h"
 #include "qprintf.h"
 
-#define ZEROPAD 1	  /* pad with zero */
-#define SIGN	2	  /* unsigned/signed int */
-#define PLUS	4	  /* show plus */
-#define SPACE   8	  /* space if plus */
-#define LEFT	16	 /* left justified */
-#define SMALL   32	 /* Must be 32 == 0x20 */
-#define SPECIAL 64	 /* 0x */
-#define FLOAT   128	 /* float/double */
-
-#ifndef PRINT_BUF_SIZE
-	#define PRINT_BUF_SIZE 32
-#endif
-
+/*
 #define do_div(n,base) ({ \
 	int __res; \
 	__res = ((unsigned int) n) % (unsigned) base; \
 	n = ((unsigned int) n) / (unsigned) base; \
-	__res; })
+	__res; })*/
 	
 #define isdigit(c) ((c>='0') && (c<='9'))
 
 
-static int skip_atoi(const char **s){
+static uint16_t skip_atoi(const char **s){
 	
-	int i = 0;
+	uint16_t i = 0;
 	while (isdigit(**s))
 		i = i * 10 + *((*s)++) - '0';
 	return i;
 	
 }
 
-static int qstrlen(const char *s, int maxlen){
-	int l = maxlen;
+static uint16_t qstrlen(const char *s, uint16_t maxlen){
+	uint16_t l = maxlen;
 	while ( (*s++) && (--l));
 	return maxlen - l;
 }
@@ -57,7 +45,7 @@ static int qstrlen(const char *s, int maxlen){
 
 
 
-static char *number(char *str, int num, char base, char size, char precision, uint8_t type){
+static char *number(char *str, int16_t num, uint8_t base, int8_t size, int8_t precision, uint8_t type){
 
 	char tmp[18];
 	uint8_t c, sign, locase;
@@ -96,8 +84,10 @@ static char *number(char *str, int num, char base, char size, char precision, ui
 	if (num == 0)
 		tmp[i++] = '0';
 	else
-		while (num != 0)
-			tmp[i++] = (digits[do_div(num, base)] | locase);
+		while (num != 0){
+			tmp[i++] = (digits[num % base] | locase);
+			num /=base;
+		}
 	if (i > precision)
 		precision = i;
 	size -= precision;
@@ -129,12 +119,12 @@ static char *number(char *str, int num, char base, char size, char precision, ui
 }
 
 #ifndef _DISABLE_FLOAT
-char *number_float(char *str, double num_f, char size, char precision, uint8_t type){
+static char *number_float(char *str, double num_f, int8_t size, int8_t precision, uint8_t type){
 	
-	//char *st = str;
+	//uint8_t *st = str;
 	//unsigned long num;
-	uint16_t num;
-	char tmp[11];
+	u num;
+	uint8_t tmp[11];
 	uint8_t c, sign;
 	uint8_t i;
 
@@ -166,7 +156,8 @@ char *number_float(char *str, double num_f, char size, char precision, uint8_t t
 	else
 		while (num != 0) {
 			if (i == precision) tmp[i++] = '.';
-			tmp[i++] = digits[do_div(num, 10)];
+			tmp[i++] = digits[num % 10];
+			num /=10;
 		}
 		
 	size -= i;
@@ -190,11 +181,11 @@ char *number_float(char *str, double num_f, char size, char precision, uint8_t t
 }
 #endif
 
-int vsprintf(char *buf, const char *fmt, va_list args){
+uint16_t vsprintf(char *buf, const char *fmt, va_list args){
 	
-	int len;
-	unsigned int num;
-	char i, base;
+	uint16_t len;
+	int16_t num;
+	uint8_t i, base;
 	char *str;
 	const char *s;
 	
@@ -204,9 +195,9 @@ int vsprintf(char *buf, const char *fmt, va_list args){
 	
 	uint8_t flags;			 /* flags to number() */
  
-	char field_width;		/* width of output field */
-	char precision;		 /* min. # of digits for integers; max
-						number of chars for from string */
+	int8_t field_width;		/* width of output field */
+	int8_t precision;		 /* min. # of digits for integers; max
+						number of uint8_ts for from string */
  
 	for (str = buf; *fmt; ++fmt) {
 		if (*fmt != '%') {
@@ -343,7 +334,7 @@ int vsprintf(char *buf, const char *fmt, va_list args){
 			if (flags & SIGN)
 				num = va_arg(args, int);
 			else
-				num = va_arg(args, uint16_t);
+				num = va_arg(args, unsigned int);
 			str = number(str, num, base, field_width, precision, flags);
 		};
 	}
@@ -352,7 +343,7 @@ int vsprintf(char *buf, const char *fmt, va_list args){
 	
 }
  
-int sprintf(char *buf, const char *fmt, ...){
+uint16_t sprintf(char *buf, const char *fmt, ...){
 	
 	va_list args;
 	uint16_t i;
@@ -364,7 +355,7 @@ int sprintf(char *buf, const char *fmt, ...){
 	
 }
  
-int qprintf(uart_handle uart, const char *fmt, ...){
+uint16_t qprintf(uart_handle uart, const char *fmt, ...){
 	char printf_buf[PRINT_BUF_SIZE];
 	va_list args;
 	uint16_t printed;

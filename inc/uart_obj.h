@@ -29,8 +29,8 @@ typedef struct {
 	
 	uart_isr rx_isr;
 	
-	_PERIP_CTL_FUNC uart_XD_enable;
-	_PERIP_CTL_FUNC uart_TX_wait;
+// 	_PERIP_CTL_FUNC uart_XD_enable;
+// 	_PERIP_CTL_FUNC uart_TX_wait;
 	
 	
 } uart_obj;

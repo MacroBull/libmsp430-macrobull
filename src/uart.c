@@ -44,7 +44,7 @@ void uart_init(uart_handle this, uint32_t freq, uint32_t baud){
 	/*init uart interface "this", set buadrate by calculating from frequency
 	 */
 	uint8_t tmp;
-	this->uart_XD_enable(this);  //enble port for special function
+	uart_XD_enable(this);  //enble port for special function
 	//*this->CTL1 |= UCSWRST;
 	*this->CTL1 = UCSWRST + UCSSEL_2; //reset and set clock source
 	
@@ -63,7 +63,7 @@ void uart_init(uart_handle this, uint32_t freq, uint32_t baud){
 inline void uart__putchar(uart_handle this, char c){
 	/* putc protype without led blink
 	 */
-	this->uart_TX_wait(this);
+	uart_TX_wait(this);
 	*this->TXBUF = c;
 }
 

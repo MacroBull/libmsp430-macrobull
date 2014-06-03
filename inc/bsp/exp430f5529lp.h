@@ -39,16 +39,12 @@ static uart_obj UART_TABLE[]={
 	
 		.ISR_vector =	_PERIP_UART0_ISR_VECTOR,
 	
-		.XLED_PORT_DIR =	(addr)PADIR_,
-		.XLED_PORT_OUT =	(addr)PAOUT_,
-	
+		.XLED_PORT_DIR =	(addr)&P1DIR,
+		.XLED_PORT_OUT =	(addr)&P1OUT,
+
 		.TXLED =	BIT0,
 		.RXLED =	BIT0,
 	
-// 		.rx_isr =	_PERIP_UART0_RX_ISR
-
-		.uart_XD_enable = (void *)&uart_XD_enable,
-		.uart_TX_wait = (void *)&uart_TX_wait
 		
 		
 	
@@ -78,16 +74,11 @@ static uart_obj UART_TABLE[]={
 	
 		.ISR_vector =	_PERIP_UART1_ISR_VECTOR,
 	
-		.XLED_PORT_DIR =	(addr)(PBDIR_+1),
-		.XLED_PORT_OUT =	(addr)(PBOUT_+1),
-	
+		.XLED_PORT_DIR =	(addr)&P4DIR,
+		.XLED_PORT_OUT =	(addr)&P4OUT,
+
 		.TXLED =	BIT7,
 		.RXLED =	BIT7,
-	
-// 		.rx_isr =	_PERIP_UART1_RX_ISR
-
-		.uart_XD_enable = (void *)&uart_XD_enable,
-		.uart_TX_wait = (void *)&uart_TX_wait
 		
 		
 	
@@ -164,10 +155,10 @@ static i2c_obj I2C_TABLE[]={
 		
 		.ISR_vector =	_PERIP_I2C0_ISR_VECTOR,
 		
-		.XLED_PORT_DIR =	(addr)PADIR_,
-		.XLED_PORT_OUT =	(addr)PAOUT_,
-		
-		.XLED =	BIT0,
+//		.XLED_PORT_DIR =	(addr)PADIR_,
+//		.XLED_PORT_OUT =	(addr)PAOUT_,
+//
+//		.XLED =	BIT0,
 		
 	},
 	{
@@ -199,10 +190,10 @@ static i2c_obj I2C_TABLE[]={
 		
 		.ISR_vector =	_PERIP_I2C1_ISR_VECTOR,
 		
-		.XLED_PORT_DIR =	(addr)(PBDIR_+1),
-		.XLED_PORT_OUT =	(addr)(PBOUT_+1),
-		
-		.XLED =	BIT7,
+//		.XLED_PORT_DIR =	(addr)(PBDIR_+1),
+//		.XLED_PORT_OUT =	(addr)(PBOUT_+1),
+//
+//		.XLED =	BIT7,
 	}
 };
 
@@ -212,3 +203,61 @@ static i2c_handle I2C1 = &I2C_TABLE[1];
 
 
 #endif
+
+
+//////////////////timer/////////////////////
+
+#define TIMER_CNT _PERIP_TIMER_CNT
+
+#include "timer_obj.h"
+
+static timer_obj TIMER_TABLE[]={
+	{
+		.CTL = (addr16)_PERIP_TIMER0_CTL_ADDR,
+		.CCR0 = (addr16)_PERIP_TIMER0_CCR0_ADDR,
+		
+		.TIE = _PERIP_TIMER0_IE,
+
+		.OV_ISR_vector = _PERIP_TIMER0_OV_ISR_VECTOR,
+		.OV_ISR_callbacks = _PERIP_TIMER0_OV_ISR_CALLBACKS_ADDR,
+
+		.events = NULL
+	},
+	{
+		.CTL = (addr16)_PERIP_TIMER1_CTL_ADDR,
+		.CCR0 = (addr16)_PERIP_TIMER1_CCR0_ADDR,
+		
+		.TIE = _PERIP_TIMER1_IE,
+
+		.OV_ISR_vector = _PERIP_TIMER1_OV_ISR_VECTOR,
+		.OV_ISR_callbacks = _PERIP_TIMER1_OV_ISR_CALLBACKS_ADDR,
+
+		.events = NULL
+	},
+	{
+		.CTL = (addr16)_PERIP_TIMER2_CTL_ADDR,
+		.CCR0 = (addr16)_PERIP_TIMER2_CCR0_ADDR,
+		
+		.TIE = _PERIP_TIMER2_IE,
+
+		.OV_ISR_vector = _PERIP_TIMER2_OV_ISR_VECTOR,
+		.OV_ISR_callbacks = _PERIP_TIMER2_OV_ISR_CALLBACKS_ADDR,
+
+		.events = NULL
+	},
+	{
+		.CTL = (addr16)_PERIP_TIMER3_CTL_ADDR,
+		.CCR0 = (addr16)_PERIP_TIMER3_CCR0_ADDR,
+		
+		.TIE = _PERIP_TIMER3_IE,
+
+		.OV_ISR_vector = _PERIP_TIMER3_OV_ISR_VECTOR,
+		.OV_ISR_callbacks = _PERIP_TIMER3_OV_ISR_CALLBACKS_ADDR,
+
+		.events = NULL
+	}
+};
+
+static timer_handle TIMER0 = &TIMER_TABLE[0];
+static timer_handle TIMER1 = &TIMER_TABLE[1];
+static timer_handle TIMER2 = &TIMER_TABLE[2];
