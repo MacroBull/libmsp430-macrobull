@@ -20,12 +20,14 @@ extern inline void uart_RXLED_on(uart_handle this);
 extern inline void uart_RXLED_off(uart_handle this);
 
 extern inline void uart_TX_wait(uart_handle this);
+extern inline void uart_RX_wait(uart_handle this);
 extern inline void uart_interrupt_enable(uart_handle this);
 extern inline void uart_interrupt_disable(uart_handle this);
 
 extern void uart_init(uart_handle this, uint32_t freq, uint32_t baud);
 
 extern inline void uart__putchar(uart_handle this, char c);
+extern inline char uart__getchar(uart_handle this);
 
 
 /*MCTL references*/

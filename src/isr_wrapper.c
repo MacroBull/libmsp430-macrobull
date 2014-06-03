@@ -227,3 +227,29 @@ __interrupt void TIMERB1_ISR_wrapper(void)
 }
 
 #endif
+
+///////////////////adc12////////////////////////
+#ifdef ADC12_VECTOR
+isr_callback *ADC12_ISR_callbacks = NULL;
+#pragma vector = ADC12_VECTOR
+__interrupt void ADC12_ISR_wrapper(void)
+{
+	int16_t exit_code;
+	isr_callback *callback = ADC12_ISR_callbacks;
+	while (NULL != *callback){
+		exit_code = (*callback)((ADC12_VECTOR << 8) + ADC12IV);
+		callback++;
+		if (exit_code>0) {
+			__bis_SR_register_on_exit(exit_code);
+			break;
+		}
+		if (exit_code<0){
+			__bic_SR_register_on_exit(-exit_code);
+			break;
+		}
+	}
+}
+
+#endif
+
+

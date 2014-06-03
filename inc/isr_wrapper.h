@@ -39,4 +39,9 @@ extern isr_callback_16 *TIMERB0_ISR_callbacks;
 extern isr_callback_16 *TIMERB1_ISR_callbacks;
 #endif
 
+///////////////////adc12////////////////////////
+#ifdef ADC12_VECTOR
+extern isr_callback *ADC12_ISR_callbacks;
+#endif
+
 #endif

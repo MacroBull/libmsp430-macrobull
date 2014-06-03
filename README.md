@@ -16,7 +16,9 @@ My MSP430 lib
 
 * a tiny pinosc implementation (on working).
 
-* In-place DCO frequency parameter calculation, UCS for F5xxx, F6xxx / DCO for x2xxx.
+* In-place DCO frequency parameter calculation, UCS for F5xxx/F6xxx, DCO for x2xxx.
+
+* Easy to use ADC10 and ADC12 setup.
 
 
 ----------------------
@@ -30,5 +32,7 @@ Library Demo
 * Timer/Event
 
 * UART
+
+* ADC12
 
 All demos are tested on MSPGCC 4.7.0 and CCS 6.0.0

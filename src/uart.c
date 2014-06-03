@@ -30,6 +30,10 @@ inline void uart_TX_wait(uart_handle this){
 	while (!(*this->IFG & this->TXIFG));
 }
 
+inline void uart_RX_wait(uart_handle this){
+	while (!(*this->IFG & this->RXIFG));
+}
+
 inline void uart_interrupt_enable(uart_handle this){
 // 	this->rx_isr = rx_isr;
 	*this->IE |= this->RXIE;
@@ -65,6 +69,11 @@ inline void uart__putchar(uart_handle this, char c){
 	 */
 	uart_TX_wait(this);
 	*this->TXBUF = c;
+}
+
+inline char uart__getchar(uart_handle this){
+	uart_RX_wait(this);
+	return *this->RXBUF;
 }
 
 
