@@ -6,38 +6,28 @@
 #include <msp430.h>
 #include <stdint.h>
 
-#include "hw_obj.h"
+#include "pwm/pwm_obj.h"
 
-#define _CCR0 CCR[0]
 
-#define STOP	MC_0
-#define UP		MC_1
-#define CONT	MC_2
-#define UP_DOWN	MC_3
+#define PWM_STOP	MC_0
+#define PWM_UP		MC_1
+#define PWM_CONT	MC_2
+#define PWM_UP_DOWN	MC_3
 
-#define TACLK	TASSEL_0
-#define TBCLK	TBSSEL_0
+#define PWMSRC_TACLK	TASSEL_0
+#define PWMSRC_TBCLK	TBSSEL_0
 
-#define ACLK	TASSEL_1
-#define SMCLK	TASSEL_2
-#define INCLK	TASSEL_3
+#define PWMSRC_ACLK	TASSEL_1
+#define PWMSRC_SMCLK	TASSEL_2
+#define PWMSRC_INCLK	TASSEL_3
 
-#define POUT	OUTMOD_7 // +duty%
-#define NOUT	OUTMOD_2 // -duty%
-#define TOGGLE	OUTMOD_4 // -duty%
+#define PWM_POUT	OUTMOD_7 // +duty%
+#define PWM_NOUT	OUTMOD_2 // -duty%
+#define PWM_TOGGLE	OUTMOD_4 // -duty%
 
-typedef struct {
-	
-	const addr PORT_SEL, PORT_SEL2, PORT_DIR;
-	/* const */ uint8_t OUT0; // TA1~TAn mask = TAs << TA0 #!important
-	uint8_t OUTs;
-	
-	const addr16 CTL;
-	const addr16 CCR[8]; // each CCR
-	const addr16 CCTL[8]; // each output mode
-	
-} PWM_OBJ;
-
-typedef PWM_OBJ *PWM_HANDLE;
+extern inline void pwm_port_enable(pwm_handle this, uint8_t outputs);
+extern void pwm_enable(pwm_handle this, uint16_t clock_source, char counter_mode, uint8_t outputs, uint16_t period);
+extern void pwm_disable(pwm_handle this);
+extern void pwm_setter(pwm_handle this, uint8_t cc_id, uint16_t cc_cnt, uint16_t cc_mode);
 
 #endif

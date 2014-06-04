@@ -88,35 +88,111 @@ static uart_obj UART_TABLE[]={
 static uart_handle UART0 = &UART_TABLE[0];
 static uart_handle UART1 = &UART_TABLE[1];
 
+////////////////pwm///////////////////////
 
+#define PWM_CNT _PERIP_PWM_CNT
 
-// #define PWM_CNT _PERIP_PWM_CNT
-// 
-// static PWM_OBJ PWM_TABLE[]={
-// 	
-// 	{
-// 		.PORT_SEL = (addr)_PERIP_PWM0_PORT_SEL_ADDR,
-// 		.PORT_SEL2 = (addr)_PERIP_PWM0_PORT_SEL2_ADDR,
-// 		.PORT_DIR = (addr)_PERIP_PWM0_PORT_DIR_ADDR,
-// 		
-// 		.OUT0 = _PERIP_PWM0_OUT0,
-// 		//.OUTs = _PERIP_PWM0_OUTs,
-// 
-// 		.CTL = (addr16)_PERIP_PWM0_CTL, 
-// 		.CCTL = { (addr16)_PERIP_PWM0_CCTL0,
-// 			(addr16)_PERIP_PWM0_CCTL1,
-// 			(addr16)_PERIP_PWM0_CCTL2
-// 		},
-// 		
-// 		.CCR = { (addr16)_PERIP_PWM0_CCR0,
-// 			(addr16)_PERIP_PWM0_CCR1,
-// 			(addr16)_PERIP_PWM0_CCR2
-// 		}
-// 	
-// 	}
-// };
-// 
-// static PWM_HANDLE PWM0 = &PWM_TABLE[0];
+#include "pwm/pwm_obj.h"
+
+static pwm_obj PWM_TABLE[]={
+	
+	{
+		.PORT_SEL = (addr)_PERIP_PWM0_PORT_SEL_ADDR,
+		.PORT_SEL2 = (addr)_PERIP_PWM0_PORT_SEL2_ADDR,
+		.PORT_DIR = (addr)_PERIP_PWM0_PORT_DIR_ADDR,
+		
+		.OUT1 = _PERIP_PWM0_OUT1,
+		.OUTs = 0x0f << 1,
+
+		.CTL = (addr16)_PERIP_PWM0_CTL_ADDR, 
+		.CCTL = { (addr16)_PERIP_PWM0_CCTL0_ADDR,
+			(addr16)_PERIP_PWM0_CCTL1_ADDR,
+			(addr16)_PERIP_PWM0_CCTL2_ADDR,
+			(addr16)_PERIP_PWM0_CCTL3_ADDR,
+			(addr16)_PERIP_PWM0_CCTL4_ADDR,
+		},
+		
+		.CCR = { (addr16)_PERIP_PWM0_CCR0_ADDR,
+			(addr16)_PERIP_PWM0_CCR1_ADDR,
+			(addr16)_PERIP_PWM0_CCR2_ADDR,
+			(addr16)_PERIP_PWM0_CCR3_ADDR,
+			(addr16)_PERIP_PWM0_CCR4_ADDR,
+		}
+	
+	},
+	{
+		.PORT_SEL = (addr)_PERIP_PWM1_PORT_SEL_ADDR,
+		.PORT_SEL2 = (addr)_PERIP_PWM1_PORT_SEL2_ADDR,
+		.PORT_DIR = (addr)_PERIP_PWM1_PORT_DIR_ADDR,
+		
+		.OUT1 = _PERIP_PWM1_OUT1,
+		.OUTs = 0x03 << 1,
+
+		.CTL = (addr16)_PERIP_PWM1_CTL_ADDR, 
+		.CCTL = { (addr16)_PERIP_PWM1_CCTL0_ADDR,
+			(addr16)_PERIP_PWM1_CCTL1_ADDR,
+			(addr16)_PERIP_PWM1_CCTL2_ADDR,
+		},
+		
+		.CCR = { (addr16)_PERIP_PWM1_CCR0_ADDR,
+			(addr16)_PERIP_PWM1_CCR1_ADDR,
+			(addr16)_PERIP_PWM1_CCR2_ADDR,
+		}
+	
+	},
+	{
+		.PORT_SEL = (addr)_PERIP_PWM2_PORT_SEL_ADDR,
+		.PORT_SEL2 = (addr)_PERIP_PWM2_PORT_SEL2_ADDR,
+		.PORT_DIR = (addr)_PERIP_PWM2_PORT_DIR_ADDR,
+		
+		.OUT1 = _PERIP_PWM2_OUT1,
+		.OUTs = 0x03 << 1,
+
+		.CTL = (addr16)_PERIP_PWM2_CTL_ADDR, 
+		.CCTL = { (addr16)_PERIP_PWM2_CCTL0_ADDR,
+			(addr16)_PERIP_PWM2_CCTL1_ADDR,
+			(addr16)_PERIP_PWM2_CCTL2_ADDR,
+		},
+		
+		.CCR = { (addr16)_PERIP_PWM2_CCR0_ADDR,
+			(addr16)_PERIP_PWM2_CCR1_ADDR,
+			(addr16)_PERIP_PWM2_CCR2_ADDR,
+		}
+	
+	},
+	{
+		.PORT_SEL = (addr)_PERIP_PWM3_PORT_SEL_ADDR,
+		.PORT_SEL2 = (addr)_PERIP_PWM3_PORT_SEL2_ADDR,
+		.PORT_DIR = (addr)_PERIP_PWM3_PORT_DIR_ADDR,
+		
+		.OUT1 = _PERIP_PWM3_OUT1,
+		.OUTs = 0x3f << 1,
+
+		.CTL = (addr16)_PERIP_PWM3_CTL_ADDR, 
+		.CCTL = { (addr16)_PERIP_PWM3_CCTL0_ADDR,
+			(addr16)_PERIP_PWM3_CCTL1_ADDR,
+			(addr16)_PERIP_PWM3_CCTL2_ADDR,
+			(addr16)_PERIP_PWM3_CCTL3_ADDR,
+			(addr16)_PERIP_PWM3_CCTL4_ADDR,
+			(addr16)_PERIP_PWM3_CCTL5_ADDR,
+			(addr16)_PERIP_PWM3_CCTL6_ADDR,
+		},
+		
+		.CCR = { (addr16)_PERIP_PWM3_CCR0_ADDR,
+			(addr16)_PERIP_PWM3_CCR1_ADDR,
+			(addr16)_PERIP_PWM3_CCR2_ADDR,
+			(addr16)_PERIP_PWM3_CCR3_ADDR,
+			(addr16)_PERIP_PWM3_CCR4_ADDR,
+			(addr16)_PERIP_PWM3_CCR5_ADDR,
+			(addr16)_PERIP_PWM3_CCR6_ADDR,
+		}
+	
+	}
+};
+
+static pwm_handle PWM0 = &PWM_TABLE[0];
+static pwm_handle PWM1 = &PWM_TABLE[1];
+static pwm_handle PWM2 = &PWM_TABLE[2];
 
 //////////////i2c////////////////////
 
@@ -219,7 +295,7 @@ static timer_obj TIMER_TABLE[]={
 		.TIE = _PERIP_TIMER0_IE,
 
 		.OV_ISR_vector = _PERIP_TIMER0_OV_ISR_VECTOR,
-		.OV_ISR_callbacks = _PERIP_TIMER0_OV_ISR_CALLBACKS_ADDR,
+// 		.OV_ISR_callbacks = _PERIP_TIMER0_OV_ISR_CALLBACKS_ADDR,
 
 		.events = NULL
 	},
@@ -230,7 +306,7 @@ static timer_obj TIMER_TABLE[]={
 		.TIE = _PERIP_TIMER1_IE,
 
 		.OV_ISR_vector = _PERIP_TIMER1_OV_ISR_VECTOR,
-		.OV_ISR_callbacks = _PERIP_TIMER1_OV_ISR_CALLBACKS_ADDR,
+// 		.OV_ISR_callbacks = _PERIP_TIMER1_OV_ISR_CALLBACKS_ADDR,
 
 		.events = NULL
 	},
@@ -241,7 +317,7 @@ static timer_obj TIMER_TABLE[]={
 		.TIE = _PERIP_TIMER2_IE,
 
 		.OV_ISR_vector = _PERIP_TIMER2_OV_ISR_VECTOR,
-		.OV_ISR_callbacks = _PERIP_TIMER2_OV_ISR_CALLBACKS_ADDR,
+// 		.OV_ISR_callbacks = _PERIP_TIMER2_OV_ISR_CALLBACKS_ADDR,
 
 		.events = NULL
 	},
@@ -252,7 +328,7 @@ static timer_obj TIMER_TABLE[]={
 		.TIE = _PERIP_TIMER3_IE,
 
 		.OV_ISR_vector = _PERIP_TIMER3_OV_ISR_VECTOR,
-		.OV_ISR_callbacks = _PERIP_TIMER3_OV_ISR_CALLBACKS_ADDR,
+// 		.OV_ISR_callbacks = _PERIP_TIMER3_OV_ISR_CALLBACKS_ADDR,
 
 		.events = NULL
 	}

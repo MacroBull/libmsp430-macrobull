@@ -50,13 +50,13 @@ int16_t timer_event_callbackHandler(uint16_t vector, int16_t ctr){
 
 isr_callback_16 timer_event_callbackPreset[] = { timer_event_callbackHandler, NULL};
 
-void timer_event_set(timer_handle this, uint8_t event_cnt, event_handle events){
-	// this will overide Timerx_X1_ISR_callbacks settings
+isr_callback_16 *timer_event_set(timer_handle this, uint8_t event_cnt, event_handle events){
+	// assign to TIMERX_ISR_callbacks will overide Timerx_X1_ISR_callbacks settings
 	this->event_cnt = event_cnt;
 	this->events = events;
 
-	*(this->OV_ISR_callbacks) = timer_event_callbackPreset;
 	timer_interrupt_enable(this);
+	return  timer_event_callbackPreset;
 }
 
 void timer_env_set(uint8_t global_timer_count, timer_handle global_timerTable){

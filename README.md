@@ -6,7 +6,7 @@ My MSP430 lib
 
 * Useful JSON creating, parsing and dumping tool's to make mcu exchange data with high-level programming language interface more easily.
 
-* PWM object makes PWM settings simple, with SPWM data preseted.
+* 4 Timer in a same form PWM object makes PWM settings simple, with SPWM data preseted.
 
 * Easy to use Timer setting and callbacks, support many events in various overflow * periods
 
@@ -31,8 +31,10 @@ Library Demo
 
 * Timer/Event
 
+* PWM
+
 * UART
 
 * ADC12
 
-All demos are tested on MSPGCC 4.7.0 and CCS 6.0.0
+All demos are tested on MSPGCC 4.7.0 and CCS 6.0.0, MSP430F5529 on EXP430F5529LP, codes are compatible with MSP430G2553 on Launchpad and MSPF5529 on EXPF5529

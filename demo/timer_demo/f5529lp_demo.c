@@ -68,7 +68,7 @@ void main(){
 	while (1){
 		
 		if (mode){
-			timer_event_set(TIMER2, 2,  event_list); //makes timer2 in event mode
+			TIMER2_A1_ISR_callbacks = timer_event_set(TIMER2, 2,  event_list); //makes timer2 in event mode
 		}
 		else {
 // 			timer_event_reset(TIMER2);  // no need for direct change in below

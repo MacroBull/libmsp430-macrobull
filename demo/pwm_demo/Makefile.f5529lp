@@ -1,6 +1,7 @@
 TARGET = msp430f5529
+
 GLB_DFN = RELEASE
-OBJ = f5529lp_demo.o isr_wrapper.o uart.o qput.o binutil/base64.o data/json.o binutil/checksum/crc32.o
+OBJ = f5529lp_demo.o pwm/pwm.o
 
 CC = msp430-gcc
 VPATH = ${LIBMSP430_MACROBULL}/src
@@ -15,7 +16,7 @@ debug: build
 
 
 install: out.elf
-	echo "opt fet_block_size 1024" > ~/.mspdebug
+	echo "opt fet_block_size 2048" > ~/.mspdebug
 # 	echo "opt fet_block_size 256" > ~/.mspdebug
 	mspdebug-tilib "prog out.elf"
 

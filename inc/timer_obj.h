@@ -35,7 +35,6 @@ typedef struct {
 	const uint16_t TIE;
 	
 	const uint16_t OV_ISR_vector;
-	isr_callback_16 **OV_ISR_callbacks;
 	
 	uint8_t event_cnt;
 	event_handle events;

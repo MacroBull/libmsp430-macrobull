@@ -19,7 +19,7 @@ extern void timer_interrupt_disable(timer_handle this);
 
 extern int16_t timer_event_callbackHandler(uint16_t vector, int16_t ctr);
 
-extern void timer_event_set(timer_handle this, uint8_t event_cnt, event_handle events);
+extern isr_callback_16 *timer_event_set(timer_handle this, uint8_t event_cnt, event_handle events);
 extern void timer_event_reset(timer_handle this);
 extern void timer_env_set(uint8_t global_timer_count, timer_handle global_timerTable);
 
