@@ -37,7 +37,7 @@ void pwm_disable(pwm_handle this){
 	*this->CTL &= ~PWM_STOP;
 }
 
-void pwm_setter(pwm_handle this, uint8_t cc_id, uint16_t cc_cnt, uint16_t cc_mode){
+void pwm_set(pwm_handle this, uint8_t cc_id, uint16_t cc_cnt, uint16_t cc_mode){
 	
 	*this->CCR[cc_id] = cc_cnt; 
 	*this->CCTL[cc_id] = cc_mode; 
