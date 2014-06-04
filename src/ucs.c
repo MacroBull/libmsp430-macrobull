@@ -38,7 +38,6 @@ uint8_t ucs_DCOFreq_set(uint32_t freq){
 	bcnt -=3;
 	
 	UCSCTL3 = SELREF_2 + FLLREFDIV_0;	//Set DCO FLL reference = REFO
-	UCSCTL4 |= SELA_2;	// Set ACLK = REFO(must have)
 	__bis_SR_register(SCG0);	// Disable the FLL control loop
 	
 	UCSCTL0 = 0x0000;
@@ -58,5 +57,6 @@ uint8_t ucs_DCOFreq_set(uint32_t freq){
 	if (0 == bcnt) 
 		return 1;
 	else
+		UCSCTL4 = SELA_0 + SELS_3 + SELM_3; // set SMCLK, MCLK to DCO
 		return 0;
 }

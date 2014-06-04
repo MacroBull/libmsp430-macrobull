@@ -34,7 +34,7 @@ int16_t timer_event_callbackHandler(uint16_t vector, int16_t ctr){
 				ev = &(_TIMER_TABLE[i].events[j]);
 				if (ev->enable){
 					ev->counter ++;
-					if (ev->period == ev->counter){
+					if (ev->period <= ev->counter){
 						ev->callback(ev->call_counter);
 						ev->counter = 0;
 						ev->call_counter++;

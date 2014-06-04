@@ -20,6 +20,8 @@ My MSP430 lib
 
 * Easy to use ADC10 and ADC12 setup.
 
+* Random 16 bit integer generator from ADC or VLO-DCO
+
 
 ----------------------
 
@@ -36,5 +38,7 @@ Library Demo
 * UART
 
 * ADC12
+
+* Random
 
 All demos are tested on MSPGCC 4.7.0 and CCS 6.0.0, MSP430F5529 on EXP430F5529LP, codes are compatible with MSP430G2553 on Launchpad and MSPF5529 on EXPF5529

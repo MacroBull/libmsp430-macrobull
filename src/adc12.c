@@ -5,6 +5,7 @@
 #include "adc12.h"
 
 volatile uint16_t *ADC12_RESULT = &ADC12MEM0;
+//volatile uint16_t *ADC12_RESULT = ADC12MEM;
 
 inline void adc12_waitingRefSettle(){
 	// deprecated function
@@ -14,7 +15,7 @@ inline void adc12_waitingRefSettle(){
 int16_t adc12_result(){
 	// deprecated function
 	while ((ADC12CTL1 & ADC12BUSY) );
-	return ADC12MEM;
+	return ADC12MEM0;
 }
 
 inline void adc12_start(){
