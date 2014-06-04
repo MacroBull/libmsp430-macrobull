@@ -13,11 +13,11 @@ uint16_t rand_fromADC(){ // unfinished
 
 	uint8_t i = 16;
 	uint16_t res = 0;
-	while (--i){
+	do{
 		adc10_start();
 		res <<= 1;
 		res |= 1 & adc10_result();
-	}
+	} while (--i);
 	adc10_down();
 	return res;
 	

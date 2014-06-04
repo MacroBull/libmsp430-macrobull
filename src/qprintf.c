@@ -45,7 +45,7 @@ static uint16_t qstrlen(const char *s, uint16_t maxlen){
 
 
 
-static char *number(char *str, int16_t num, uint8_t base, int8_t size, int8_t precision, uint8_t type){
+static char *number(char *str, uint16_t num, uint8_t base, int8_t size, int8_t precision, uint8_t type){
 
 	char tmp[18];
 	uint8_t c, sign, locase;
@@ -62,9 +62,9 @@ static char *number(char *str, int16_t num, uint8_t base, int8_t size, int8_t pr
 	c = (type & ZEROPAD) ? '0' : ' ';
 	sign = 0;
 	if (type & SIGN) {
-		if (num < 0) {
+		if ((int16_t)num < 0) {
 			sign = '-';
-			num = -num;
+			num = -((int16_t)num);
 			size--;
 		} else if (type & PLUS) {
 			sign = '+';
@@ -184,7 +184,6 @@ static char *number_float(char *str, double num_f, int8_t size, int8_t precision
 uint16_t vsprintf(char *buf, const char *fmt, va_list args){
 	
 	uint16_t len;
-	int16_t num;
 	uint8_t i, base;
 	char *str;
 	const char *s;
@@ -330,13 +329,8 @@ uint16_t vsprintf(char *buf, const char *fmt, va_list args){
 			continue;
 		};
 		
-		if (!(flags & FLOAT)) {
-			if (flags & SIGN)
-				num = va_arg(args, int);
-			else
-				num = va_arg(args, unsigned int);
-			str = number(str, num, base, field_width, precision, flags);
-		};
+		if (!(flags & FLOAT))
+			str = number(str, va_arg(args, uint16_t), base, field_width, precision, flags);
 	}
 	*str = 0;
 	return str - buf;
