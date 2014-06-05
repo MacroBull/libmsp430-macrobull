@@ -27,6 +27,12 @@ My MSP430 lib
 
 ----------------------
 
+NOTICE: 
+	
+	ADC10 random on MSP430G2553 has more 1 however ADC12 random on MSP430F5529 has more 0 _(:3JZ)_
+
+----------------------
+
 Library Demo
 
 * ADC10: ~~MSP430G2553 on Launchpad~~
