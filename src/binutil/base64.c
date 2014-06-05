@@ -1,18 +1,18 @@
 
 #include <stdint.h>
 
-static const uint8_t base64Table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static const char base64Table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 
-uint16_t base64enc(uint8_t *buf, const uint8_t *s, uint16_t len){ // buff should be pre-allocated 4/3 sizeof s
+uint16_t base64enc(char *buf, const char *s, uint16_t len){ // buff should be pre-allocated 4/3 sizeof s
 	
 	// non - RFC 822
 	
-	uint8_t *tailPos, *bufStart;
+	char *tailPos, *bufStart;
 	uint8_t t0, t1, t2;
 	
 	bufStart = buf;
-	tailPos = (uint8_t *)s + len / 3 * 3;
+	tailPos = (char *)s + len / 3 * 3;
 	
 	while (s<tailPos){
 		t0 = *(s++);

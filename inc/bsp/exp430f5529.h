@@ -6,6 +6,7 @@
 #include "misc.h"
 
 
+#error ~~~board not configured yet!
 //////////////uart ////////////////////////
 #ifdef __BOARD_HAS_UART__
 

@@ -14,31 +14,35 @@ My MSP430 lib
 
 * Code effecient and easy to use "qprint.c" printf implementation, working with UART interface profiles.
 
-* a tiny pinosc implementation (on working).
+* a tiny pinosc implementation other than CTS Library (on working).
 
-* In-place DCO frequency parameter calculation, UCS for F5xxx/F6xxx, DCO for x2xxx.
+* In-place DCO frequency parameter calculation, UCS-DCO for F5xxx/F6xxx, BCS-DCO for x2xxx.
 
 * Easy to use ADC10 and ADC12 setup.
 
 * Random 16 bit integer generator from ADC or VLO-DCO
+
+* TODO: support hardware CRC
 
 
 ----------------------
 
 Library Demo
 
-* I2C
+* ADC10: ~~MSP430G2553 on Launchpad~~
 
-* JSON
+* ADC12: MSP430F5529 on F5529LP ~~/EXP430F5529~~
 
-* Timer/Event
+* I2C:  MSP430F5529 on F5529LP ~~,  MSP430G2553 on Launchpad~~
 
-* PWM
+* JSON: MSP430F5529 on F5529LP/EXP430F5529,  MSP430G2553 on Launchpad
 
-* UART
+* PWM: MSP430F5529 on F5529LP,  MSP430G2553 on Launchpad
 
-* ADC12
+* Random: MSP430F5529 on F5529LP,  MSP430G2553 on Launchpad
 
-* Random
+* Timer/Event: MSP430F5529 on F5529LP,  MSP430G2553 on Launchpad
 
-All demos are tested on MSPGCC 4.7.0 and CCS 6.0.0, MSP430F5529 on EXP430F5529LP, codes are compatible with MSP430G2553 on Launchpad and MSPF5529 on EXPF5529
+* UART: MSP430F5529 on F5529LP,  MSP430G2553 on Launchpad
+
+All demos are tested on MSPGCC 4.7.0 and CCS 6.0.0.

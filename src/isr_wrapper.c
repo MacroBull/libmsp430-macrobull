@@ -3,6 +3,52 @@
 
 
 //////////////////USCI_UART//////////////////////////
+#ifdef USCIAB0RX_VECTOR
+
+isr_callback_8 *USCIAB0RX_ISR_callbacks = NULL;
+#pragma vector=USCIAB0RX_VECTOR
+__interrupt void USCIAB0RX_VECTOR_ISR_wrapper(){
+	int16_t exit_code;
+	isr_callback_8 *callback = USCIAB0RX_ISR_callbacks;
+	while (NULL != *callback){
+		exit_code = (*callback)((USCIAB0RX_VECTOR << 8), UCA0RXBUF);
+		callback++;
+		if (exit_code>0) {
+			__bis_SR_register_on_exit(exit_code);
+			break;
+		}
+		if (exit_code<0){
+			__bic_SR_register_on_exit(-exit_code);
+			break;
+		}
+	}
+}
+
+#endif
+
+#ifdef USCIAB0TX_VECTOR
+
+isr_callback *USCIAB0TX_ISR_callbacks = NULL;
+#pragma vector=USCIAB0TX_VECTOR
+__interrupt void USCIAB0TX_VECTOR_ISR_wrapper(){
+	int16_t exit_code;
+	isr_callback *callback = USCIAB0TX_ISR_callbacks;
+	while (NULL != *callback){
+		exit_code = (*callback)((USCIAB0TX_VECTOR << 8));
+		callback++;
+		if (exit_code>0) {
+			__bis_SR_register_on_exit(exit_code);
+			break;
+		}
+		if (exit_code<0){
+			__bic_SR_register_on_exit(-exit_code);
+			break;
+		}
+	}
+}
+
+#endif
+
 #ifdef USCI_A0_VECTOR
 
 isr_callback_8 *USCI_A0_ISR_callbacks = NULL;
@@ -79,6 +125,7 @@ isr_callback_16 *TIMER0_A1_ISR_callbacks = NULL;
 __interrupt void TIMER0_A1_ISR_wrapper(void)
 {
 	int16_t exit_code;
+	P1OUT ^= BIT6;
 	isr_callback_16 *callback = TIMER0_A1_ISR_callbacks;
 	while (NULL != *callback){
 		exit_code = (*callback)((TIMER0_A1_VECTOR << 8) + TA0IV, TA0R);

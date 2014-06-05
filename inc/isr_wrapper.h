@@ -13,6 +13,12 @@ typedef int16_t (*isr_callback)(const uint16_t isr_vector);
 typedef int16_t (*isr_callback_8)(const uint16_t isr_vector, int8_t p0);
 typedef int16_t (*isr_callback_16)(const uint16_t isr_vector, int16_t p0);
 
+#ifdef USCIAB0RX_VECTOR
+extern isr_callback_8 *USCIAB0RX_ISR_callbacks;
+#endif
+#ifdef USCIAB0TX_VECTOR
+extern isr_callback *USCIAB0TX_ISR_callbacks;
+#endif
 
 #ifdef USCI_A0_VECTOR
 extern isr_callback_8 *USCI_A0_ISR_callbacks;

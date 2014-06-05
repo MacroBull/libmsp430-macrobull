@@ -5,7 +5,7 @@
 #include "timer.h"
 #include "timer_obj.h"
 
-
+extern const unsigned int TIOV;
 
 void timer_init(timer_handle this, uint16_t clkSrc, uint16_t period){
 	// only up and continous

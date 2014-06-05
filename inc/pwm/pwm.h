@@ -28,6 +28,6 @@
 extern inline void pwm_port_enable(pwm_handle this, uint8_t outputs);
 extern void pwm_enable(pwm_handle this, uint16_t clock_source, char counter_mode, uint8_t outputs, uint16_t period);
 extern void pwm_disable(pwm_handle this);
-extern void pwm_set(pwm_handle this, uint8_t cc_id, uint16_t cc_cnt, uint16_t cc_mode);
+extern void pwm_set(pwm_handle this, uint8_t cc_id, uint16_t cc_period, uint16_t cc_mode);
 
 #endif

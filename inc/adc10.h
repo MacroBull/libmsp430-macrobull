@@ -1,48 +1,42 @@
 
+#ifndef __ADC10_H
+#define __ADC10_H
 
 #include	<msp430.h>
 #include	<stdint.h>
 #include	"misc.h"
 
-#ifndef __ADC10_H
-#define __ADC10_H
-
-#define	REFVSS	0
-#define	REFVCC	50
-#define	REF1_5	15
-#define	REF2_5	25
-#define	REFN	1
-#define	REFE	2
+#define	ADC_REF_VSS	0
+#define	ADC_REF_VCC	33
+#define	ADC_REF_1V5	15
+#define	ADC_REF_2V5	25
+#define	ADC_REF_N	1
+#define	ADC_REF_E	2
 //#define	REFNP	REFN
 //#define	REFEP	10
 
-#define	CONV_SCH	0
-#define	CONV_MCH	1
-#define	CONV_SCONV	0
-#define	CONV_MCONV	2
+#define	ADC_CONV_SS	0
+#define	ADC_CONV_SM	1
+#define	ADC_CONV_RS	2
+#define	ADC_CONV_RM	3
 
-#define	INCH_TEMP INCH_10
+#define	ADC_CH_TEMP 10
 
-#if defined(ADC10CTL0_)
-	#define ADC10_15P	1.5/1024
-	#define ADC10_25P	2.5/1024
-	#define ADC10_start	(ADC10CTL0 |= ENC + ADC10SC)
-	#define ADC10_busy	(ADC10CTL1 & ADC10BUSY)
-	#define ADC10_wait	{while(!(ADC10CTL1 & ADC10BUSY));}
-#endif
+#define ADC10_15P	1.5/1024
+#define ADC10_25P	2.5/1024
 
-extern inline void ADC_waitingRefSettle();
+#define ADC10_BUSY	(ADC10CTL1 & ADC10BUSY)
+#define ADC10_WAIT	{while(ADC10_BUSY);}
 
-#if defined(ADC10CTL0_)
-	//#warning ADC10!
-	extern inline void ADC10_startMSC(unsigned int data[], unsigned char len);
-	extern void ADC10_init(char port, char refN, char refP, char sht, char timing_source, char convMode, int (*ADC10_done_ISR)());
-	extern float ADC10_toDegC_f(int v);
-	extern int ADC10_toDegC (int v);
-	extern int ADC10_result();
-	extern int ADC10_result_2s();
-	extern inline void avgFilter(int a[],char len, char cnt);
-	extern void ADC10_set_ISR(int (*ISR_ptr)());
-	//#pragma vector=ADC10_VECTOR
-#endif
+
+extern inline void adc10_start();
+extern inline void adc10_startMSC(uint16_t *data, uint8_t len);
+extern void adc10_init(uint8_t port, uint8_t sht, uint8_t refP, uint8_t refN, uint8_t startSource, uint8_t convMode);
+extern void adc10_down();
+
+extern uint16_t adc10_result();
+extern uint16_t adc10_result_2s();
+extern inline void avgFilter(int a[],char len, char cnt);
+
+
 #endif

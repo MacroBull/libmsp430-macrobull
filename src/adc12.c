@@ -64,7 +64,7 @@ void adc12_init(uint8_t resolution, uint16_t sht_L, uint16_t sht_H, uint8_t clkS
 }
 
 void adc12_down(){
-	ADC12CTL0 &= (ADC12ON + ADC12ENC + ADC12SC);
+	ADC12CTL0 &= ~(ADC12ON + ADC12ENC + ADC12SC);
 }
 
 

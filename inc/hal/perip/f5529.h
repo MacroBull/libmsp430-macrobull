@@ -7,6 +7,8 @@
 //#include "hw_obj.h"
 
 //////////////uart////////////////////
+#define __BOARD_HAS_UART__
+
 #define	_PERIP_UART_CNT	2
 
 #define _PERIP_UART0_XD_PORT_SEL_ADDR	&P3SEL
@@ -61,6 +63,8 @@
 #define _PERIP_UART1_ISR_VECTOR	USCI_A1_VECTOR
 
 //////////////////////pwm////////////////////////////
+#define __BOARD_HAS_PWM__
+
 #define _PERIP_PWM_CNT 4
 
 #define _PERIP_PWM0_PORT_SEL_ADDR	&P1SEL
@@ -142,6 +146,8 @@
 
 
 /////////////////i2c//////////////////////
+#define __BOARD_HAS_I2C__
+
 #define _PERIP_I2C0_XD_PORT_SEL_ADDR	&P3SEL
 #define _PERIP_I2C0_XD_PORT_SEL2_ADDR	NULL_ADDR
 
@@ -203,15 +209,18 @@
 
 
 ///////////////////timer ////////////////////
+#define __BOARD_HAS_TIMER__
 
 #define _PERIP_TIMER_CNT 4
+
+const unsigned int TIOV = 10;
 
 #define _PERIP_TIMER0_CTL_ADDR &TA0CTL
 #define _PERIP_TIMER0_CCR0_ADDR &TA0CCR0
 
 #define _PERIP_TIMER0_IE TAIE
 #define _PERIP_TIMER0_OV_ISR_VECTOR TIMER0_A1_VECTOR
-// #define _PERIP_TIMER0_OV_ISR_CALLBACKS_ADDR &TIMER0_A1_ISR_callbacks
+// extern const .... _PERIP_TIMER0_OV_ISR_CALLBACKS_ADDR &TIMER0_A1_ISR_callbacks
 
 #define _PERIP_TIMER1_CTL_ADDR &TA1CTL
 #define _PERIP_TIMER1_CCR0_ADDR &TA1CCR0

@@ -7,8 +7,7 @@
 #include "adc10.h"
 uint16_t rand_fromADC(){ // unfinished
 
-// 	adc10_ctrl_set(0, ADC_CH_TEMP, 15, 0, 0); // Temperature, 1.5V ref
-// 	adc10_init(10, 16, 0, ASRC_ADC, ADC_CONV_SS + 1);
+	adc10_init(ADC_CH_TEMP, 16, 15, 0, 0, ADC_CONV_SS);
 	// Resolution = 10bit, SHT = 200clks, Single chanel
 
 	uint8_t i = 16;
@@ -56,9 +55,6 @@ uint16_t rand_fromVLO(pwm_handle TA){ // about 8500 clks @10MHz // using VLO x D
 	#define CC_ACLK 2
 	uint16_t prev_UCSCTL4 = UCSCTL4;
 	uint16_t prev_TACTL = *TA->CTL;
-	uint16_t *TACCTL_ptr = TA->CCTL[CC_ACLK];
-	uint16_t prev_TACCTL = *TACCTL_ptr;
-	uint16_t prev_TACCR = *TA->CCR[CC_ACLK];
 	
 	UCSCTL4 = SELA_1 +  (UCSCTL4 & 0xff);  // ACLK = VLO
 	*TA->CTL = TASSEL_2 + MC_2;  // TA SRC = SMCLK
@@ -76,8 +72,36 @@ uint16_t rand_fromVLO(pwm_handle TA){ // about 8500 clks @10MHz // using VLO x D
 	/* restore settings */
 	UCSCTL4 = prev_UCSCTL4;
 	*TA->CTL = prev_TACTL;
-	*TACCTL_ptr = prev_TACCTL;
-	*TA->CCR[CC_ACLK] = prev_TACCR;
+	
+	return res;
+	
+}
+
+#else
+uint16_t rand_fromVLO(){ // using VLO x DCO
+	
+	uint16_t prev_BCSCTL1 = BCSCTL1;
+	uint16_t prev_BCSCTL3 = BCSCTL3;
+	uint16_t prev_TACTL = TA0CTL;
+	
+	BCSCTL1 &= ~XTS;
+	BCSCTL3 = LFXT1S_2 + (BCSCTL3 & ~LFXT1S_3); // ACLK = VLO
+	TA0CTL = TASSEL_2 + MC_2;  // TA SRC = SMCLK
+	TA0CCTL0 = CM_3 + CCIS_1 + CAP; // TACCR capture ACLK
+	
+	uint8_t i = 16;
+	uint16_t res = 0;
+	do{
+		TA0CCTL0 &= ~CCIFG;
+		res <<= 1;
+		while (!(CCIFG & TA0CCTL0));
+		res |= 1 & TA0CCR0;
+	}while (--i);
+	
+	/* restore settings */
+	BCSCTL1 = prev_BCSCTL1;
+	BCSCTL3 = prev_BCSCTL3;
+	TA0CTL = prev_TACTL;
 	
 	return res;
 	

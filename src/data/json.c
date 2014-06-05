@@ -1,4 +1,5 @@
 
+#include <string.h>
 #include "data/json.h"
 
 inline char *strcpyR(char *dest, const char *source){ 

@@ -2,33 +2,35 @@
 #include <msp430.h>
 #include <stdint.h>
 
+#include "hal/perip.h"
+#include "bsp/exp430g2.h"
+
 #include "wdt.h"
-#include "hal/perip/f5529.h"
-#include "bsp/exp430f5529lp.h"
+#include "calib_val.h"
 
 #include "uart.h"
 #include "qput.h"
 #include "isr_wrapper.h"
 #include "data/json.h"
-#include "binutil/checksum/crc32.h"
+
+
+#define BUTTON BIT3
 
 int wait;
-char text[2048], *p, func;
+char text[60], *p, func;
 int pos;
-
-#define PERIOD_LENGTH 256
-#include "data.h"
 
 int16_t rx_proc(const uint16_t ISR_vector, int8_t c){ // "echo" function
 	
+	uart_RXLED_on(UART0);
+	int ret = 0;
 	if (wait){
-		if ('\n' == c){
-			return -CPUOFF;
-		}
+		if ('\n' == c) ret = -CPUOFF;
 		*p++ = c;
 	}
 	
-	return 0;
+	uart_RXLED_off(UART0);
+	return ret;
 }
 
 
@@ -44,38 +46,25 @@ json_handle objTest(){
 	
 }
 
-json_handle encode_data_demo(){
-	uint32_t crc32_val;
-	json_handle range_start, length, data_obj, crch, crcl;
-	
-	range_start = json_createIntObj("range_start", pos*2);
-	length = json_createIntObj("length'", PERIOD_LENGTH);
-	data_obj = json_createBlobObj("data", &data[pos], PERIOD_LENGTH);
-	crc32_val = crc32_direct(0, &data[pos], PERIOD_LENGTH);
-	crch = json_createIntObj("CRC32H", 0xffff & (crc32_val >> 16));
-	crcl = json_createIntObj("CRC32L", 0xffff & crc32_val);
-	
-	return json_createObjectObj("Root",range_start, length, data_obj, crch, crcl,NULL);
-	
-}
-
 
 isr_callback_8 rx_callbacks[]={rx_proc,NULL};
 
 int main(void)
 {
 	WDT_DISABLE; 
-	//BC1MSET;
+	BC1MSET;
 	
-  	USCI_A1_ISR_callbacks = rx_callbacks;
+  	USCIAB0RX_ISR_callbacks = rx_callbacks;
 	
-	uart_init(UART1, 1100000, 9600);
-	uart_XLED_enable(UART1);
-	uart_interrupt_enable(UART1);
+	uart_init(UART0, 1000000, 9600);
+	uart_XLED_enable(UART0);
+	uart_interrupt_enable(UART0);
 	
-	P1DIR &= ~BIT1;
-	P1REN |= BIT1;
-	P1OUT |= BIT1;
+	P1DIR &= ~BUTTON;
+	P1REN |= BUTTON;
+	P1OUT |= BUTTON;
+	
+	qputs(UART0, "Inited.\n");
 	
 	
 	json_handle a;
@@ -86,13 +75,8 @@ int main(void)
  		wait = 0;
  		*p = '\0';
 		
- 		if (P1IN & BIT1) {// Key not pressed
-			if (pos<4096/2){
-				a = encode_data_demo();
-				pos += PERIOD_LENGTH/2;
-			}
-			else
-				a = json_createObjectObj("root", json_createStringObj("response","done"), NULL);
+ 		if (P1IN & BUTTON) {// Key not pressed
+			a = objTest();
 		}
 		else {
 			pos = 0;
@@ -117,8 +101,8 @@ int main(void)
 // 		base64enc(text, &data[pos], PERIOD_LENGTH);
 		
 		
-  		qputs(UART1, text);
-		qputc(UART1, '\n');
+  		qputs(UART0, text);
+		qputc(UART0, '\n');
 		//__delay_cycles(800000);
 		
 		

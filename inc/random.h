@@ -13,6 +13,8 @@ extern uint16_t rand_fromADC();
 #ifdef __MSP430_HAS_UCS__
 #include "pwm/pwm_obj.h"
 extern uint16_t rand_fromVLO(pwm_handle TA);
+#else
+extern uint16_t rand_fromVLO();
 #endif
 
 #endif

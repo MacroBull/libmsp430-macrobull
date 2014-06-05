@@ -8,8 +8,6 @@
 #include "hw_obj.h"
 #include "isr_wrapper.h"
 
-#define TIOV 14
-
 
 typedef void (*timer_event_callback)(uint16_t call_counter);
 

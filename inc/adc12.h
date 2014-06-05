@@ -15,7 +15,7 @@
 #define ADC_CONV_RS	0x40
 #define ADC_CONV_RM	0x60
 
-#define ADC_REF_0V	0
+#define ADC_REF_VSS	0
 #define ADC_REF_EN	5
 #define ADC_REF_EP	10
 #define ADC_REF_1V5	15
