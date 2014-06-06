@@ -51,4 +51,6 @@ Library Demo
 
 * UART: MSP430F5529 on F5529LP,  MSP430G2553 on Launchpad
 
+* serial2sock_mixture_demo: MSP430F5529 on F5529LP, a All-in-one test demo interacting with web browser, with the help of serial2socket(in my mcu_tools repo), making it possible to access peripherals over HTTP. What need next to do is implement TCP interface over MSP430 native USB.
+
 All demos are tested on MSPGCC 4.7.0 and CCS 6.0.0.

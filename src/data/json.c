@@ -168,6 +168,38 @@ json_handle json_createObjectObj(char *name, ...){
 	return this;
 }
 
+void json_insertArrayObj(json_handle this, ...){
+	json_handle child;
+	va_list args;
+	
+	va_start(args, this);
+	child = va_arg(args, json_handle);
+	
+	while (NULL != child){
+		child ->type |= JSON_IN_ARRAY;
+		child -> next = this->val_tar;
+		this->val_tar = child;
+		child = va_arg(args, json_handle);
+	}
+	va_end(args);
+}
+
+void json_insertObjectObj(json_handle this, ...){
+	json_handle child;
+	va_list args;
+	
+	va_start(args, this);
+	child = va_arg(args, json_handle);
+	
+	while (NULL != child){
+		child ->type |= JSON_IN_OBJECT;
+		child -> next = this->val_tar;
+		this->val_tar = child;
+		child = va_arg(args, json_handle);
+	}
+	va_end(args);
+}
+
 uint16_t json_free(json_handle this){ 
 	// free an json object, return the amount of object deleted.
 	json_handle prev;

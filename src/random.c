@@ -8,7 +8,7 @@
 uint16_t rand_fromADC(){ // unfinished
 
 	adc10_init(ADC_CH_TEMP, 16, 15, 0, 0, ADC_CONV_SS);
-	// Resolution = 10bit, SHT = 200clks, Single chanel
+	//Single chanel
 
 	uint8_t i = 16;
 	uint16_t res = 0;
@@ -47,6 +47,7 @@ uint16_t rand_fromADC(){ // about 9600 clks @10MHz (sht=200) //using Temperature
 
 #ifdef __MSP430_HAS_UCS__
 #include "pwm/pwm_obj.h"
+#include "hw_obj.h"
 uint16_t rand_fromVLO(pwm_handle TA){ // about 8500 clks @10MHz // using VLO x DCO (-> REF)
 	/*
 	 * This suppose to use TimerA because TAx.2 - CCI_B = TACLK,
@@ -55,6 +56,7 @@ uint16_t rand_fromVLO(pwm_handle TA){ // about 8500 clks @10MHz // using VLO x D
 	#define CC_ACLK 2
 	uint16_t prev_UCSCTL4 = UCSCTL4;
 	uint16_t prev_TACTL = *TA->CTL;
+	addr16 TACCTL_ptr = TA->CCTL[CC_ACLK];
 	
 	UCSCTL4 = SELA_1 +  (UCSCTL4 & 0xff);  // ACLK = VLO
 	*TA->CTL = TASSEL_2 + MC_2;  // TA SRC = SMCLK

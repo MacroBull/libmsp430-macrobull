@@ -69,6 +69,10 @@ extern json_handle json_createArrayObj(char *name, ...);
 
 extern json_handle json_createObjectObj(char *name, ...);
 
+extern void json_insertArrayObj(json_handle this, ...);
+
+extern void json_insertObjectObj(json_handle this, ...);
+
 extern uint16_t json_free(json_handle obj);
 extern uint16_t json_free_rude(json_handle obj);
 

@@ -1,0 +1,36 @@
+TARGET = msp430f5529
+
+GLB_DFN = RELEASE
+OBJ = main.o isr_wrapper.o uart.o qput.o qprintf.o ucs.o timer.o data/json.o binutil/base64.o adc12.o pwm/pwm.o
+
+CC = msp430-gcc
+VPATH = ${LIBMSP430_MACROBULL}/src
+export CPATH = ${LIBMSP430_MACROBULL}/inc
+CFLAGS = -mmcu=$(TARGET) -Wall -D $(GLB_DFN) -g
+
+
+build: clean out.elf
+
+debug: build
+	msp430-objdump -D out.elf > asm.asm
+
+
+install: out.elf
+	echo "opt fet_block_size 1024" > ~/.mspdebug
+# 	echo "opt fet_block_size 256" > ~/.mspdebug
+	mspdebug-tilib "prog out.elf"
+
+
+out.elf: $(OBJ)
+	$(CC) -o out.elf $(CFLAGS) $(OBJ)
+
+
+%.o : %.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+clean:
+	-rm out.elf
+	-find -name "*.o" -print -exec rm {} \;
+	echo ${LIBMSP430_MACROBULL}/inc > .kdev_include_paths   # init for include paths
+	echo "/opt/cross/msp430/include" >> .kdev_include_paths   # init for include paths

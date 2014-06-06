@@ -213,7 +213,7 @@
 
 #define _PERIP_TIMER_CNT 4
 
-const unsigned int TIOV = 10;
+const unsigned int TIOV = 14;
 
 #define _PERIP_TIMER0_CTL_ADDR &TA0CTL
 #define _PERIP_TIMER0_CCR0_ADDR &TA0CCR0

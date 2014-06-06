@@ -41,3 +41,11 @@ void qputs(uart_handle uart, char *s){
 	_puts(uart, s);
 	uart_TXLED_off(uart);
 }
+
+void qputsln(uart_handle uart, char *s){
+	/* put string */
+	uart_TXLED_on(uart);
+	_puts(uart, s);
+	uart__putchar(uart, '\n');
+	uart_TXLED_off(uart);
+}

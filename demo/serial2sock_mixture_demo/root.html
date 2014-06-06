@@ -1,0 +1,119 @@
+<html>
+    <head>
+        <style>
+        button {
+                border: none;
+                background-color: rgb(112, 101, 223);
+                color: rgb(245, 255, 254);
+                border-radius: 6px;
+                opacity: 0.8;
+                padding: 1%;
+                font-size: 28;
+            }
+        .ti {     
+            text-align: center;
+        }
+        #getInfo{
+                font-family: Droid Sans Fallback;
+                font-size: 28;
+                margin: 5%;
+            }
+        #command, #info {
+            margin-left: 5%;
+            margin-right: 5%;
+            padding: 3%;
+            font-size: 28px;
+            font-family: Droid Sans Fallback;
+            border-style: solid;
+            border-color:  rgb(224, 238, 214);
+            min-width: 400px;
+            }
+        input[type='checkbox'] {
+            -webkit-appearance:none;
+            width:28px;
+            height:28px;
+            background:white;
+            border-radius:10px;
+            background: #e88;
+            border:4px solid #555;
+        }
+        input[type='checkbox']:checked {
+            background: #7e7;
+        }
+        input {
+            min-height: 2em;
+        }
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>
+            var auto = false;
+            var timer;
+            function fetch(){
+                $.getJSON("read",function(list){
+                        $.each(list, function(index, element){
+                            console.log(index, element);
+                            $("#"+index)[0].textContent = index+" : " + element;
+                        });
+                    });
+                if (auto) timer = setTimeout("fetch()", 1000);
+            };
+            function command(s){
+                console.log(s);
+                $.post("write", s+'\n');
+            };
+            $(document).ready(function(){
+                $("#main").click(function(){
+                    fetch();
+                    $("#analog")[0].style.display = "";
+                });
+                $("#auto").click(function(){
+                    auto = !auto;
+                });
+                $("#set-pwm")[0].onchange = function(){
+                    command(JSON.stringify({setPWM:$("#set-pwm")[0].value*100}));
+                };
+                $("#cmd").click(function(){
+                    s={};
+                    if ($("#set-time")[0].value) s["setTime"]=parseInt($("#set-time")[0].value);
+                    if ($("#set-pwm")[0].value) s["setPWM"]=$("#set-pwm")[0].value*100;
+                    if ($("#set-baud")[0].value) s["setUARTBaud"]=parseInt($("#set-baud")[0].value);
+                    if ($("#send-uart")[0].value) s["writeUART"]=$("#send-uart")[0].value;
+                    command(JSON.stringify(s));
+                });
+            });
+        </script>
+    </head><body>
+<div id="getInfo">
+    <button id="main">get infomation</button>
+    <input id="auto" type="checkbox" /> Auto refresh
+</div>
+<div id="info" style="float:left">
+    <p class='ti'>Information</p>
+<div id="analog" style="display:none">
+    <div id="Temperature" style="float:left;display="></div>&nbsp;&#8451;<br>
+    <div id="Voltage" style="float:left"></div>&nbsp;mV<br>
+    <div id="Analog0" style="float:left"></div>&nbsp;(raw)<br>
+    <div id="Analog1" style="float:left"></div>&nbsp;mV<br>
+    <div id="Analog2" style="float:left"></div>&nbsp;mV<br>
+</div>
+<div id="time"></div>
+<div id="uart"></div>
+</div>
+<div id="command" style="float:right">
+    <p class='ti'>Command</p>
+    <div style="float:left">
+        Set uart baudrate:<br>
+        Send via uart:<br>
+        Set PWM:<br>
+        Set clock:<br>
+    </div>
+    <div style="float:right">
+        <input id="set-baud" /> <br>
+        <input id="send-uart" /> <br>
+        <input id="set-pwm" type="range"/><br>
+        <input id="set-time" /> <br>
+        <button id="cmd"  style="float:right;padding: 6px">commit</button>
+    </div>
+</div>
+
+</body></html>

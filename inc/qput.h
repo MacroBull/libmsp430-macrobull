@@ -11,5 +11,6 @@ static const char digits[16] = "0123456789ABCDEF"; /* "GHIJKLMNOPQRSTUVWXYZ"; */
 extern void qputc(uart_handle uart, char n);
 extern void qputh(uart_handle uart, char n);
 extern void qputs(uart_handle uart, char *s);
+extern void qputsln(uart_handle uart, char *s);
 
 #endif
