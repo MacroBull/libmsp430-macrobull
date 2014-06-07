@@ -133,7 +133,9 @@ void handleInput(){
 	target= json_objectIndex(data, "setPWM"); //  duty = n / 10000
 	if (NULL != target){
 		pwm_set( PWM0, 1, target -> val_int / (10000 / M), PWM_POUT); // +duty%
-		pwm_set( PWM0, 2, target -> val_int / (10000 / M), PWM_NOUT); // +duty%
+		pwm_set( PWM0, 2, target -> val_int / (10000 / M), PWM_POUT); // +duty%
+		pwm_set( PWM0, 3, target -> val_int / (10000 / M), PWM_NOUT); // +duty%
+		pwm_set( PWM0, 4, target -> val_int / (10000 / M), PWM_NOUT); // +duty%
 		json_insertObjectObj(output, json_createStringObj("SetPWM", "Succeeded."), NULL);
 	}
 	target= json_objectIndex(data, "setUARTBaud");
@@ -166,9 +168,11 @@ int main(){
 	uart_XLED_enable(UART1);
 	uart_interrupt_enable(UART1);
 	
-	pwm_enable(PWM0, PWMSRC_SMCLK, PWM_UP, BIT1 + BIT2, M); // enable 4 TA0 out, up mode
+	pwm_enable(PWM0, PWMSRC_SMCLK, PWM_UP, BIT1 + BIT2 + BIT3 + BIT4, M); // enable 4 TA0 out, up mode
 	pwm_set( PWM0, 1, M >> 1, PWM_POUT); // +duty%
-	pwm_set( PWM0, 2, M >> 1, PWM_NOUT); // +duty%
+	pwm_set( PWM0, 2, M >> 1, PWM_POUT); // +duty%
+	pwm_set( PWM0, 3, M >> 1, PWM_NOUT); // +duty%
+	pwm_set( PWM0, 4, M >> 1, PWM_NOUT); // +duty%
 	
 	
 	adc12_ctrl_set(0, 0, 33, 0, 0); // input channel 0: P6.1 / VCC ref
@@ -183,7 +187,7 @@ int main(){
 	
 	
 	timer_env_set(TIMER_CNT, TIMER_TABLE); // set timer_event environment
-	timer_init(TIMER2, TSRC_SMCLK, EV_PERIOD); // set timer2(Timer_A2) in period of 4000 SMCLKs
+	timer_init(TIMER2, TSRC_SMCLK, EV_PERIOD); // set timer2(Timer_A2) in period of 1ms
 	TIMER2_A1_ISR_callbacks = timer_event_set(TIMER2, 1,  event_list); //makes timer2 in event mode
 	
 	P1DIR |= BIT0;
