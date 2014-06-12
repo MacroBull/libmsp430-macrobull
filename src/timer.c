@@ -70,25 +70,3 @@ void timer_event_reset(timer_handle this){
 // 	*(this->OV_ISR_callbacks) = NULL;
 }
 
-
-/*void timer_event_init(timer_handle this){
-	// this will overide Timerx_X1_ISR_callbacks settings
-	this->events = (event_handle)malloc(sizeof(event_handle)*EVENT_ALLOC_INCREMENT);
-	*this->OV_ISR_callbacks = (*_ISR_callback_16)malloc(sizeof(*_ISR_callback_16)*EVENT_ALLOC_INCREMENT);
-	this->event_count = 0;
-	timer_interrupt_enable(this);
-}
-
-
-void timer_event_add(timer_handle this, event_handle event){
-
-	this->events[this->event_count] = event;
-	(*this->OV_ISR_callbacks)[this->event_count] = event->callback;
-
-	this->event_count ++;
-}
-*this -> events = event_list;
-//	this->ISR_callbacks = (*_ISR_callback_16)malloc(sizeof(_ISR_callback_16) * _ISR_callback_16);
-
-
-}*/
