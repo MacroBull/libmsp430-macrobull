@@ -1,7 +1,7 @@
 TARGET = msp430g2553
 
 GLB_DFN = RELEASE
-OBJ = g2553g2_demo.o isr_wrapper.o timer.o
+OBJ = g2553g2_demo.o isr_wrapper.o timer.o timer_delay.o
 
 CC = msp430-gcc
 VPATH = ${LIBMSP430_MACROBULL}/src
