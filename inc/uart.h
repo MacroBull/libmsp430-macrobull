@@ -32,6 +32,8 @@ extern inline char uart__getchar(uart_handle this);
 
 /*MCTL references*/
 
+#ifndef UCBR7
+
 #define UCBR0 0b00000000
 #define UCBR1 0b00000010
 #define UCBR2 0b00100010
@@ -44,6 +46,7 @@ extern inline char uart__getchar(uart_handle this);
 static const uint8_t _UCBR[] = {
 	UCBR0, UCBR1, UCBR2, UCBR3, UCBR4, UCBR5, UCBR6, UCBR7
 };
-	
+
+#endif
 
 #endif

@@ -51,6 +51,7 @@ void uart_init(uart_handle this, uint32_t freq, uint32_t baud){
 	uart_XD_enable(this);  //enble port for special function
 	//*this->CTL1 |= UCSWRST;
 	*this->CTL1 = UCSWRST + UCSSEL_2; //reset and set clock source
+	*this->CTL0 = 0;
 	
 	freq = ((freq << 3) + 4) / baud;
 	tmp = freq >> 11;

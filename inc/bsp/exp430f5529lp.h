@@ -7,7 +7,7 @@
 
 
 //////////////uart ////////////////////////
-#ifdef __BOARD_HAS_UART__
+#ifdef __CHIP_SUPPORT_UART__
 
 #define UART_CNT _PERIP_UART_CNT
 
@@ -92,8 +92,94 @@ static uart_handle UART1 = &UART_TABLE[1];
 
 #endif
 
+
+//////////////spi ////////////////////////
+#ifdef __CHIP_SUPPORT_SPI__
+
+#define SPI_CNT _PERIP_SPI_CNT
+
+#include "spi_obj.h"
+#include "spi.h"
+
+static spi_obj SPI_TABLE[]={
+	
+	{
+		.CLK_PORT_SEL =	(addr)_PERIP_SPI0_CLK_PORT_SEL_ADDR,
+		.CLK_PORT_SEL2 =	(addr)_PERIP_SPI0_CLK_PORT_SEL2_ADDR,
+		.XD_PORT_SEL =	(addr)_PERIP_SPI0_XD_PORT_SEL_ADDR,
+		.XD_PORT_SEL2 =	(addr)_PERIP_SPI0_XD_PORT_SEL2_ADDR,
+		
+		.SCLK =	_PERIP_SPI0_CLK,
+// 		.STE =	_PERIP_SPI0_STE,
+		.SIMO =	_PERIP_SPI0_SIMO,
+		.SOMI =	_PERIP_SPI0_SOMI,
+		
+		.CTL0 =	(addr)_PERIP_SPI0_CTL0_ADDR,
+		.CTL1 =	(addr)_PERIP_SPI0_CTL1_ADDR,
+		.BR0 =	(addr)_PERIP_SPI0_BR0_ADDR,
+		.BR1 =	(addr)_PERIP_SPI0_BR1_ADDR,
+		.MCTL =	(addr)_PERIP_SPI0_MCTL_ADDR,
+		
+		.IE =	(addr)_PERIP_SPI0_IE_ADDR,
+		.IFG =	(addr)_PERIP_SPI0_IFG_ADDR,
+		
+		.RXIE =	_PERIP_SPI0_RXIE,
+		.TXIFG =	_PERIP_SPI0_TXIFG,
+		.RXIFG =	_PERIP_SPI0_RXIFG,
+		
+		.TXBUF =	(addr)_PERIP_SPI0_TXBUF_ADDR,
+		.RXBUF =	(addr)_PERIP_SPI0_RXBUF_ADDR,
+	
+		.ISR_vector =	_PERIP_SPI0_ISR_VECTOR,
+	
+		.XLED_PORT_DIR =	(addr)&P1DIR,
+		.XLED_PORT_OUT =	(addr)&P1OUT,
+
+		.XLED =	BIT0
+	},
+	{
+		.CLK_PORT_SEL =	(addr)_PERIP_SPI1_CLK_PORT_SEL_ADDR,
+		.CLK_PORT_SEL2 =	(addr)_PERIP_SPI1_CLK_PORT_SEL2_ADDR,
+		.XD_PORT_SEL =	(addr)_PERIP_SPI1_XD_PORT_SEL_ADDR,
+		.XD_PORT_SEL2 =	(addr)_PERIP_SPI1_XD_PORT_SEL2_ADDR,
+		
+		.SCLK =	_PERIP_SPI1_CLK,
+		// 		.STE =	_PERIP_SPI1_STE,
+		.SIMO =	_PERIP_SPI1_SIMO,
+		.SOMI =	_PERIP_SPI1_SOMI,
+		
+		.CTL0 =	(addr)_PERIP_SPI1_CTL0_ADDR,
+		.CTL1 =	(addr)_PERIP_SPI1_CTL1_ADDR,
+		.BR0 =	(addr)_PERIP_SPI1_BR0_ADDR,
+		.BR1 =	(addr)_PERIP_SPI1_BR1_ADDR,
+		.MCTL =	(addr)_PERIP_SPI1_MCTL_ADDR,
+		
+		.IE =	(addr)_PERIP_SPI1_IE_ADDR,
+		.IFG =	(addr)_PERIP_SPI1_IFG_ADDR,
+		
+		.RXIE =	_PERIP_SPI1_RXIE,
+		.TXIFG =	_PERIP_SPI1_TXIFG,
+		.RXIFG =	_PERIP_SPI1_RXIFG,
+		
+		.TXBUF =	(addr)_PERIP_SPI1_TXBUF_ADDR,
+		.RXBUF =	(addr)_PERIP_SPI1_RXBUF_ADDR,
+		
+		.ISR_vector =	_PERIP_SPI0_ISR_VECTOR,
+		
+		.XLED_PORT_DIR =	(addr)&P4DIR,
+		.XLED_PORT_OUT =	(addr)&P4OUT,
+		
+		.XLED =	BIT7
+	}
+};
+
+static spi_handle SPI0 = &SPI_TABLE[0];
+static spi_handle SPI1 = &SPI_TABLE[1];
+
+#endif
+
 ////////////////pwm///////////////////////
-#ifdef __BOARD_HAS_PWM__
+#ifdef __CHIP_SUPPORT_PWM__
 
 #define PWM_CNT _PERIP_PWM_CNT
 
@@ -202,7 +288,7 @@ static pwm_handle PWM2 = &PWM_TABLE[2];
 #endif
 
 //////////////i2c////////////////////
-#ifdef __BOARD_HAS_I2C__
+#ifdef __CHIP_SUPPORT_I2C__
 
 #define I2C_CNT _PERIP_I2C_CNT
 
@@ -290,7 +376,7 @@ static i2c_handle I2C1 = &I2C_TABLE[1];
 
 
 //////////////////timer/////////////////////
-#ifdef __BOARD_HAS_TIMER__
+#ifdef __CHIP_SUPPORT_TIMER__
 
 #define TIMER_CNT _PERIP_TIMER_CNT
 
