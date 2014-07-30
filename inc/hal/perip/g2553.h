@@ -108,7 +108,10 @@
 
 #define _PERIP_TIMER_CNT 2
 
-const unsigned int TIOV = 10;
+#ifndef TIOV
+// const unsigned int TIOV = 10;
+#define TIOV (10)
+#endif
 
 #define _PERIP_TIMER0_CTL_ADDR &TA0CTL
 #define _PERIP_TIMER0_CCR0_ADDR &TA0CCR0

@@ -1,7 +1,7 @@
 
 #include <msp430.h>
 #include "wdt.h"
-#include "hal/perip/f5529.h"
+#include "hal/perip.h"
 #include "bsp/exp430f5529lp.h"
 
 #include "uart.h"

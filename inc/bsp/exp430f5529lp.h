@@ -164,7 +164,75 @@ static spi_obj SPI_TABLE[]={
 		.TXBUF =	(addr)_PERIP_SPI1_TXBUF_ADDR,
 		.RXBUF =	(addr)_PERIP_SPI1_RXBUF_ADDR,
 		
-		.ISR_vector =	_PERIP_SPI0_ISR_VECTOR,
+		.ISR_vector =	_PERIP_SPI1_ISR_VECTOR,
+		
+		.XLED_PORT_DIR =	(addr)&P4DIR,
+		.XLED_PORT_OUT =	(addr)&P4OUT,
+		
+		.XLED =	BIT7
+	},
+	{
+		.CLK_PORT_SEL =	(addr)_PERIP_SPI2_CLK_PORT_SEL_ADDR,
+		.CLK_PORT_SEL2 =	(addr)_PERIP_SPI2_CLK_PORT_SEL2_ADDR,
+		.XD_PORT_SEL =	(addr)_PERIP_SPI2_XD_PORT_SEL_ADDR,
+		.XD_PORT_SEL2 =	(addr)_PERIP_SPI2_XD_PORT_SEL2_ADDR,
+		
+		.SCLK =	_PERIP_SPI2_CLK,
+// 		.STE =	_PERIP_SPI2_STE,
+		.SIMO =	_PERIP_SPI2_SIMO,
+		.SOMI =	_PERIP_SPI2_SOMI,
+		
+		.CTL0 =	(addr)_PERIP_SPI2_CTL0_ADDR,
+		.CTL1 =	(addr)_PERIP_SPI2_CTL1_ADDR,
+		.BR0 =	(addr)_PERIP_SPI2_BR0_ADDR,
+		.BR1 =	(addr)_PERIP_SPI2_BR1_ADDR,
+		.MCTL =	(addr)_PERIP_SPI2_MCTL_ADDR,
+		
+		.IE =	(addr)_PERIP_SPI2_IE_ADDR,
+		.IFG =	(addr)_PERIP_SPI2_IFG_ADDR,
+		
+		.RXIE =	_PERIP_SPI2_RXIE,
+		.TXIFG =	_PERIP_SPI2_TXIFG,
+		.RXIFG =	_PERIP_SPI2_RXIFG,
+		
+		.TXBUF =	(addr)_PERIP_SPI2_TXBUF_ADDR,
+		.RXBUF =	(addr)_PERIP_SPI2_RXBUF_ADDR,
+	
+		.ISR_vector =	_PERIP_SPI2_ISR_VECTOR,
+	
+		.XLED_PORT_DIR =	(addr)&P1DIR,
+		.XLED_PORT_OUT =	(addr)&P1OUT,
+
+		.XLED =	BIT0
+	},
+	{
+		.CLK_PORT_SEL =	(addr)_PERIP_SPI3_CLK_PORT_SEL_ADDR,
+		.CLK_PORT_SEL2 =	(addr)_PERIP_SPI3_CLK_PORT_SEL2_ADDR,
+		.XD_PORT_SEL =	(addr)_PERIP_SPI3_XD_PORT_SEL_ADDR,
+		.XD_PORT_SEL2 =	(addr)_PERIP_SPI3_XD_PORT_SEL2_ADDR,
+		
+		.SCLK =	_PERIP_SPI3_CLK,
+		// 		.STE =	_PERIP_SPI3_STE,
+		.SIMO =	_PERIP_SPI3_SIMO,
+		.SOMI =	_PERIP_SPI3_SOMI,
+		
+		.CTL0 =	(addr)_PERIP_SPI3_CTL0_ADDR,
+		.CTL1 =	(addr)_PERIP_SPI3_CTL1_ADDR,
+		.BR0 =	(addr)_PERIP_SPI3_BR0_ADDR,
+		.BR1 =	(addr)_PERIP_SPI3_BR1_ADDR,
+		.MCTL =	(addr)_PERIP_SPI3_MCTL_ADDR,
+		
+		.IE =	(addr)_PERIP_SPI3_IE_ADDR,
+		.IFG =	(addr)_PERIP_SPI3_IFG_ADDR,
+		
+		.RXIE =	_PERIP_SPI3_RXIE,
+		.TXIFG =	_PERIP_SPI3_TXIFG,
+		.RXIFG =	_PERIP_SPI3_RXIFG,
+		
+		.TXBUF =	(addr)_PERIP_SPI3_TXBUF_ADDR,
+		.RXBUF =	(addr)_PERIP_SPI3_RXBUF_ADDR,
+		
+		.ISR_vector =	_PERIP_SPI3_ISR_VECTOR,
 		
 		.XLED_PORT_DIR =	(addr)&P4DIR,
 		.XLED_PORT_OUT =	(addr)&P4OUT,
@@ -175,6 +243,8 @@ static spi_obj SPI_TABLE[]={
 
 static spi_handle SPI0 = &SPI_TABLE[0];
 static spi_handle SPI1 = &SPI_TABLE[1];
+static spi_handle SPI2 = &SPI_TABLE[2];
+static spi_handle SPI3 = &SPI_TABLE[3];
 
 #endif
 

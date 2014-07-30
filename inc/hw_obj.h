@@ -6,9 +6,9 @@
 
 #include "misc.h"
 
-typedef char *addr8; // Little Endian no problem
+typedef volatile char *addr8; // Little Endian no problem
 typedef addr8 addr; // Little Endian no problem
-typedef int *addr16; // Little Endian no problem
+typedef volatile int *addr16; // Little Endian no problem
 
 typedef const uint16_t ISR_VECTOR; 
 

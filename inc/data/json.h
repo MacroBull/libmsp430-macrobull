@@ -21,6 +21,7 @@ extern inline char *itoa10R(char *buf, int16_t num);
 
 //extern inline void json_clearify(char *s);
 
+#define JSON_NULL_PTR	0L
 /* value /type */
 #define JSON_NULL	0
 #define JSON_INT	1

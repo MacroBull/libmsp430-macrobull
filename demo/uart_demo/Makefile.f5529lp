@@ -6,19 +6,19 @@ OBJ = f5529lp_demo.o isr_wrapper.o uart.o qput.o qprintf.o
 CC = msp430-gcc
 VPATH = ${LIBMSP430_MACROBULL}/src
 export CPATH = ${LIBMSP430_MACROBULL}/inc
-CFLAGS = -mmcu=$(TARGET) -Wall -D $(GLB_DFN) -g
+CFLAGS = -mmcu=$(TARGET) -Wall -D $(GLB_DFN) -g -O2
 
 
 build: clean out.elf
 
 debug: build
-	msp430-objdump -D out.elf > asm.asm
+	msp430-objdump -DSt out.elf > asm.asm
 
 
 install: out.elf
 	echo "opt fet_block_size 1024" > ~/.mspdebug
 # 	echo "opt fet_block_size 256" > ~/.mspdebug
-	sudo mspdebug-tilib "prog out.elf"
+	mspdebug-tilib "prog out.elf"
 
 
 out.elf: $(OBJ)

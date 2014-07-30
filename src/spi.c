@@ -46,7 +46,7 @@ void spi_init(spi_handle this, uint32_t freq, uint32_t baud, uint8_t mode){
 	spi_port_enable(this);  //enble port for special function
 	//*this->CTL1 |= UCSWRST;
 	*this->CTL1 = UCSWRST + UCSSEL_2; //reset and set clock sourceh
-	*this->CTL0 = UCSYNC+UCCKPL+UCMSB + mode;
+	*this->CTL0 = UCSYNC + UCMSB + mode;
 	
 	freq = ((freq << 3) + 4) / baud;
 	tmp = freq >> 11;
@@ -189,4 +189,12 @@ void spi_reg16_write16(spi_handle this, uint16_t addr, int val, uint16_t wait){
 	spi_XLED_off(this);
 }
 
+//////////////////CCS Low-lever/////////////////
+inline char ccsSpiTransmit8(spi_handle this, char c){
+
+	spi_TX_wait(this);
+	*this->TXBUF = c;
+	spi_RX_wait(this);
+	return *this->RXBUF;
+}
 

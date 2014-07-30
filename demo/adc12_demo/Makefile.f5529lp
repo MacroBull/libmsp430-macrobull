@@ -6,7 +6,7 @@ OBJ = f5529lp_demo.o isr_wrapper.o uart.o qput.o qprintf.o adc12.o ucs.o
 CC = msp430-gcc
 VPATH = ${LIBMSP430_MACROBULL}/src
 export CPATH = ${LIBMSP430_MACROBULL}/inc
-CFLAGS = -mmcu=$(TARGET) -Wall -D $(GLB_DFN) -g
+CFLAGS = -mmcu=$(TARGET) -Wall -D $(GLB_DFN) -O2
 
 
 build: clean out.elf

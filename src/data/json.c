@@ -58,11 +58,13 @@ json_handle json_createValueObj(char *name, uint8_t type){
 	
 	this = (json_handle)malloc(sizeof(json_obj));
 	
-	this->next = NULL;
-	this->type = type;
-	this->val_int = 0; //
-	this->val_tar = NULL; //
-	this->name = name;
+	if (JSON_NULL_PTR != this){
+		this->next = JSON_NULL_PTR;
+		this->type = type;
+		this->val_int = 0; //
+		this->val_tar = JSON_NULL_PTR; //
+		this->name = name;
+	}
 	
 	return this;
 }
@@ -72,12 +74,14 @@ json_handle json_createIntObj(char *name, int16_t num){
 	json_handle this;
 	
 	this = (json_handle)malloc(sizeof(json_obj));
-	
-	this->next = NULL;
-	this->type = JSON_INT;
-	this->val_int = num;
-	this->val_tar = NULL; //
-	this->name = name;
+
+	if (JSON_NULL_PTR != this){
+		this->next = JSON_NULL_PTR;
+		this->type = JSON_INT;
+		this->val_int = num;
+		this->val_tar = JSON_NULL_PTR; //
+		this->name = name;
+	}
 	
 	return this;
 }
@@ -87,12 +91,14 @@ json_handle json_createStringObj(char *name, char *string){
 	json_handle this;
 	
 	this = (json_handle)malloc(sizeof(json_obj));
-	
-	this->next = NULL;
-	this->type = JSON_STRING;
-	this->val_int = 0;
-	this->val_tar = string;
-	this->name = name;
+
+	if (JSON_NULL_PTR != this){
+		this->next = JSON_NULL_PTR;
+		this->type = JSON_STRING;
+		this->val_int = 0;
+		this->val_tar = string;
+		this->name = name;
+	}
 	
 	return this;
 }
@@ -103,67 +109,74 @@ json_handle json_createBlobObj(char *name, uint8_t *blob, int16_t len){
 	
 	this = (json_handle)malloc(sizeof(json_obj));
 	
-	this->next = NULL;
-	this->type = JSON_BLOB;
-	this->val_int = len;
-	this->val_tar = blob;
-	this->name = name;
+
+	if (JSON_NULL_PTR != this){
+		this->next = JSON_NULL_PTR;
+		this->type = JSON_BLOB;
+		this->val_int = len;
+		this->val_tar = blob;
+		this->name = name;
+	}
 	
 	return this;
 }
 
 json_handle json_createArrayObj(char *name, ...){
-	/* Array object from param(a0,a1,a2...NULL) (end with NULL)
+	/* Array object from param(a0,a1,a2...JSON_NULL_PTR) (end with JSON_NULL_PTR)
 	 * this->[a0,a1,a2....an]
 	 */
 	json_handle this, next, prev;
 	va_list args;
 	
 	this = (json_handle)malloc(sizeof(json_obj));
-	
-	this->next = NULL;
-	this->type = JSON_ARRAY;
-	this->val_int = 0;
-	this->name = name;
-	
-	va_start(args, name);
-	prev = va_arg(args, json_handle);
-	this->val_tar = prev;
-	while (NULL != prev){
-		prev->type |= JSON_IN_ARRAY;
-		next = va_arg(args, json_handle);
-		prev -> next = next;
-		prev = next;
+
+	if (JSON_NULL_PTR != this){
+		this->next = JSON_NULL_PTR;
+		this->type = JSON_ARRAY;
+		this->val_int = 0;
+		this->name = name;
+
+		va_start(args, name);
+		prev = va_arg(args, json_handle);
+		this->val_tar = prev;
+		while (NULL != prev){
+			prev->type |= JSON_IN_ARRAY;
+			next = va_arg(args, json_handle);
+			prev -> next = next;
+			prev = next;
+		}
+		va_end(args);
 	}
-	va_end(args);
 	
 	return this;
 }
 
 json_handle json_createObjectObj(char *name, ...){
-	/* Objects from param(a0,a1,a2...NULL) (end with NULL)
+	/* Objects from param(a0,a1,a2...JSON_NULL_PTR) (end with JSON_NULL_PTR)
 	 * this->[a0,a1,a2....an]
 	 */
 	json_handle this, next, prev;
 	va_list args;
 	
 	this = (json_handle)malloc(sizeof(json_obj));
-	
-	this->next = NULL;
-	this->type = JSON_OBJECT;
-	this->val_int = 0;
-	this->name = name;
-	
-	va_start(args, name);
-	prev = va_arg(args, json_handle);
-	this->val_tar = prev;
-	while (NULL != prev){
-		prev->type |= JSON_IN_OBJECT;
-		next = va_arg(args, json_handle);
-		prev -> next = next;
-		prev = next;
+
+	if (JSON_NULL_PTR != this){
+		this->next = JSON_NULL_PTR;
+		this->type = JSON_OBJECT;
+		this->val_int = 0;
+		this->name = name;
+
+		va_start(args, name);
+		prev = va_arg(args, json_handle);
+		this->val_tar = prev;
+		while (JSON_NULL_PTR != prev){
+			prev->type |= JSON_IN_OBJECT;
+			next = va_arg(args, json_handle);
+			prev -> next = next;
+			prev = next;
+		}
+		va_end(args);
 	}
-	va_end(args);
 	
 	return this;
 }
@@ -175,7 +188,7 @@ void json_insertArrayObj(json_handle this, ...){
 	va_start(args, this);
 	child = va_arg(args, json_handle);
 	
-	while (NULL != child){
+	while (JSON_NULL_PTR != child){
 		child ->type |= JSON_IN_ARRAY;
 		child -> next = this->val_tar;
 		this->val_tar = child;
@@ -191,7 +204,7 @@ void json_insertObjectObj(json_handle this, ...){
 	va_start(args, this);
 	child = va_arg(args, json_handle);
 	
-	while (NULL != child){
+	while (JSON_NULL_PTR != child){
 		child ->type |= JSON_IN_OBJECT;
 		child -> next = this->val_tar;
 		this->val_tar = child;
@@ -205,9 +218,9 @@ uint16_t json_free(json_handle this){
 	json_handle prev;
 	uint16_t cnt = 0;
 	
-	while (NULL != this){
+	while (JSON_NULL_PTR != this){
 		if (NULL != this->name) free(this->name);
-		if ((this->type & (JSON_OBJECT | JSON_ARRAY)) && (NULL != this -> val_tar)) // crawl in children
+		if ((this->type & (JSON_OBJECT | JSON_ARRAY)) && (JSON_NULL_PTR != this -> val_tar)) // crawl in children
 			cnt += json_free(this->val_tar);
 		prev = this;
 		this = this->next;
@@ -224,9 +237,9 @@ uint16_t json_free_rude(json_handle this){
 	json_handle prev;
 	uint16_t cnt = 0;
 	
-	while (NULL != this){
+	while (JSON_NULL_PTR != this){
 		if (NULL != this->name) free(this->name);
-		if (NULL != this -> val_tar)
+		if (JSON_NULL_PTR != this -> val_tar)
 			if (this->type & (JSON_OBJECT | JSON_ARRAY)) // crawl in children
 				cnt += json_free_rude(this->val_tar);
 			else
@@ -241,9 +254,9 @@ uint16_t json_free_rude(json_handle this){
 }
 
 json_handle json_arrayIndex(json_handle this, uint16_t index){
-	// get array this[index], return NULL if fails
+	// get array this[index], return JSON_NULL_PTR if fails
 	this = this->val_tar;
-	while (NULL != this){
+	while (JSON_NULL_PTR != this){
 		if (0 == index)
 			break;
 		index--;
@@ -253,10 +266,10 @@ json_handle json_arrayIndex(json_handle this, uint16_t index){
 }
 
 json_handle json_objectIndex(json_handle this, char *name){
-	// get dict this["name"], return NULL if fails
+	// get dict this["name"], return JSON_NULL_PTR if fails
 	// no conflict checking
 	this = this->val_tar;
-	while (NULL != this){
+	while (JSON_NULL_PTR != this){
 		if ( 0 == strcmp(name, this->name) )
 			break;
 		this = this->next;
@@ -271,7 +284,7 @@ uint16_t json_dump(char *buf, json_handle this){
 	
 	p_buf = buf;
 	
-	while (NULL != this) {
+	while (JSON_NULL_PTR != this) {
 		type = this->type;
 		
 		if ((type & JSON_IN_OBJECT) && (NULL != this->name)){
@@ -280,7 +293,7 @@ uint16_t json_dump(char *buf, json_handle this){
 			p_buf = strcpyR(p_buf, this->name);
 			*p_buf++ = '"';
 			*p_buf++ = ':';
-		};
+		}
 		
 		if (JSON_OBJECT & type){
 			//in case of object
@@ -310,14 +323,14 @@ uint16_t json_dump(char *buf, json_handle this){
 				break;
 			case	JSON_STRING:
 				*p_buf++ = '"';
-				if (NULL != this->val_tar) 
+				if (JSON_NULL_PTR != this->val_tar)
 					p_buf = strcpyR(p_buf, this->val_tar);
 				*p_buf++ = '"';
 				break;
 			case	JSON_BLOB:
 				//blob is base64 encoded
 				p_buf = strcpyR(p_buf, "\"data:;base64,");
-				if (NULL != this->val_tar) 
+				if (JSON_NULL_PTR != this->val_tar)
 					p_buf += base64enc(p_buf, this->val_tar, this->val_int);
 				*p_buf++ = '"';
 				break;
@@ -326,9 +339,9 @@ uint16_t json_dump(char *buf, json_handle this){
 				p_buf = strcpyR(p_buf, "null");
 		}
 		
-		this = (type & (JSON_IN_OBJECT | JSON_IN_ARRAY) ) ? this->next : NULL;
+		this = (type & (JSON_IN_OBJECT | JSON_IN_ARRAY) ) ? this->next : JSON_NULL_PTR;
 		// linked objects would be directly dumped regardless of the parent object
-		if (NULL != this){
+		if (JSON_NULL_PTR != this){
 			*p_buf++ = ',';
 		};
 		
@@ -345,7 +358,7 @@ char *json_parseR(json_handle this, char *s){
 	char *sp_head, *p_s, c_tmp;
 	json_handle curr, next;
 	
-	sp_head = NULL;
+	sp_head = JSON_NULL_PTR;
 	while (*s){
 		switch (*s){
 			CASE_JSON_END_CHARS:
@@ -370,7 +383,7 @@ char *json_parseR(json_handle this, char *s){
 			
 			case	'{': // handling object
 				s++;
-				next = NULL;
+				next = JSON_NULL_PTR;
 				while ('}' != *(s-1)){
 					curr = json_createValueObj(NULL, JSON_NULL);
 					s = json_parseR(curr, s);
@@ -384,7 +397,7 @@ char *json_parseR(json_handle this, char *s){
 				
 			case	'[': // handling array
 				s++;
-				next = NULL;
+				next = JSON_NULL_PTR;
 				while (']' != *(s-1)){
 					curr = json_createValueObj(NULL, JSON_NULL);
 					s = json_parseR(curr, s);
@@ -420,11 +433,11 @@ char *json_parseR(json_handle this, char *s){
 				
 			case	':': // acknowledge of name, move from string
 				this->name = this->val_tar;
-				this->val_tar = NULL;
+				this->val_tar = JSON_NULL_PTR;
 				s++;
 				break;
 			default: // maybe special values
-				if (NULL == sp_head)
+				if (JSON_NULL_PTR == sp_head)
 					sp_head = s;
 				s++;
 				break;

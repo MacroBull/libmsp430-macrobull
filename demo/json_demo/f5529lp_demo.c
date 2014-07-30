@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 #include "wdt.h"
-#include "hal/perip/f5529.h"
+#include "hal/perip.h"
 #include "bsp/exp430f5529lp.h"
 
 #include "uart.h"
@@ -77,6 +77,7 @@ int main(void)
 	P1REN |= BIT1;
 	P1OUT |= BIT1;
 	
+	qputs(UART1, "Inited.\n");
 	
 	json_handle a;
 	while (1){
