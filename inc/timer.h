@@ -5,6 +5,7 @@
 #include <msp430.h>
 #include <stdlib.h>
 
+#include "arch.h"
 #include "timer_obj.h"
 
 #define TSRC_TACLK	TASSEL_0

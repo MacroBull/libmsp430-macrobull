@@ -189,7 +189,7 @@ void spi_reg16_write16(spi_handle this, uint16_t addr, int val, uint16_t wait){
 	spi_XLED_off(this);
 }
 
-//////////////////CCS Low-lever/////////////////
+//////////////////CCS Low-level/////////////////
 inline char ccsSpiTransmit8(spi_handle this, char c){
 
 	spi_TX_wait(this);

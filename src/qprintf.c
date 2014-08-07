@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 
+#include "arch.h"
 #include "misc.h"
 #include "uart.h"
 #include "qput.h"

@@ -8,9 +8,9 @@ inline char *strcpyR(char *dest, const char *source){
 	return dest - 1;
 }
 
-inline char *itoa10R(char *buf, int16_t num){
+inline char *itoa10R(char *buf, int_ws num){
 	//  itoa base 10 with keeping the char pointer for next operation
-	char tmp[5], *p_tmp;
+	char tmp[ (ARCH_CPU_WORDSIZE==8)?3:(ARCH_CPU_WORDSIZE==16)?5:(ARCH_CPU_WORDSIZE==32)?10:-1], *p_tmp;
 	
 	p_tmp = tmp;
 	if (0 == num){
@@ -69,7 +69,7 @@ json_handle json_createValueObj(char *name, uint8_t type){
 	return this;
 }
 
-json_handle json_createIntObj(char *name, int16_t num){
+json_handle json_createIntObj(char *name, int_ws num){
 	// Object of int number
 	json_handle this;
 	
@@ -103,7 +103,7 @@ json_handle json_createStringObj(char *name, char *string){
 	return this;
 }
 
-json_handle json_createBlobObj(char *name, uint8_t *blob, int16_t len){
+json_handle json_createBlobObj(char *name, uint8_t *blob, int_ws len){
 	// Object of blob with size of len
 	json_handle this;
 	
@@ -213,10 +213,10 @@ void json_insertObjectObj(json_handle this, ...){
 	va_end(args);
 }
 
-uint16_t json_free(json_handle this){ 
+uint_ws json_free(json_handle this){ 
 	// free an json object, return the amount of object deleted.
 	json_handle prev;
-	uint16_t cnt = 0;
+	uint_ws cnt = 0;
 	
 	while (JSON_NULL_PTR != this){
 		if (NULL != this->name) free(this->name);
@@ -231,11 +231,11 @@ uint16_t json_free(json_handle this){
 	
 }
 
-uint16_t json_free_rude(json_handle this){ 
+uint_ws json_free_rude(json_handle this){ 
 	// free an json object with all its infomation, be care of blob
 	// return the amount of object deleted.
 	json_handle prev;
-	uint16_t cnt = 0;
+	uint_ws cnt = 0;
 	
 	while (JSON_NULL_PTR != this){
 		if (NULL != this->name) free(this->name);
@@ -253,7 +253,7 @@ uint16_t json_free_rude(json_handle this){
 	
 }
 
-json_handle json_arrayIndex(json_handle this, uint16_t index){
+json_handle json_arrayIndex(json_handle this, uint_ws index){
 	// get array this[index], return JSON_NULL_PTR if fails
 	this = this->val_tar;
 	while (JSON_NULL_PTR != this){
@@ -277,7 +277,7 @@ json_handle json_objectIndex(json_handle this, char *name){
 	return this;
 }
 
-uint16_t json_dump(char *buf, json_handle this){
+uint_ws json_dump(char *buf, json_handle this){
 	// dump an object to string
 	char *p_buf;
 	uint8_t type;

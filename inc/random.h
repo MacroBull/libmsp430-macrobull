@@ -5,16 +5,18 @@
 #include <msp430.h>
 #include <stdint.h>
 
+#include "arch.h"
+
 #if defined(__MSP430_HAS_ADC12__) || defined(__MSP430_HAS_ADC12_PLUS__)
-extern uint16_t rand_fromADC();
+extern uint_ws rand_fromADC();
 #endif
 
 
 #ifdef __MSP430_HAS_UCS__
 #include "pwm/pwm_obj.h"
-extern uint16_t rand_fromVLO(pwm_handle TA);
+extern uint_ws rand_fromVLO(pwm_handle TA);
 #else
-extern uint16_t rand_fromVLO();
+extern uint_ws rand_fromVLO();
 #endif
 
 #endif

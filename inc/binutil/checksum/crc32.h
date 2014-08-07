@@ -4,6 +4,9 @@
 #ifndef __CRC32_H
 #define __CRC32_H
 
+
+#include "arch.h"
+
 #define __CRC32_DISABLE_TABLE
 
 #define CRC32_POLYNOMIAL 0xEDB88320L
@@ -17,15 +20,15 @@
 
 #ifdef __CRC32_DISABLE_TABLE
 
-extern uint32_t crc32_direct(uint32_t crc, const char *buf, uint16_t len);
+extern uint32_t crc32_direct(uint32_t crc, const char *buf, uint_ws len);
 
 #define crc32 crc32_direct
 
 #else
 
-extern uint32_t digital_update_crc32(uint32_t crc, const char *data, uint16_t len);
+extern uint32_t digital_update_crc32(uint32_t crc, const char *data, uint_ws len);
 
-extern uint32_t crc32_lookup(uint32_t crc, const char *buf, uint16_t len);
+extern uint32_t crc32_lookup(uint32_t crc, const char *buf, uint_ws len);
 
 #define crc32 crc32_lookup
 

@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 
+#include "arch.h"
 #include "misc.h"
 
 typedef volatile char *addr8; // Little Endian no problem

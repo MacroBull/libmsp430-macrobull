@@ -5,13 +5,13 @@
 
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_PLUS__)
 #include "adc10.h"
-uint16_t rand_fromADC(){ // unfinished
+uint_ws rand_fromADC(){ // unfinished
 
 	adc10_init(ADC_CH_TEMP, 16, 15, 0, 0, ADC_CONV_SS);
 	//Single chanel
 
-	uint8_t i = 16;
-	uint16_t res = 0;
+	uint8_t i = ARCH_CPU_WORDSIZE;
+	uint_ws res = 0;
 	do{
 		adc10_start();
 		res <<= 1;
@@ -25,14 +25,14 @@ uint16_t rand_fromADC(){ // unfinished
 
 #if defined(__MSP430_HAS_ADC12__) || defined(__MSP430_HAS_ADC12_PLUS__)
 #include "adc12.h"
-uint16_t rand_fromADC(){ // about 9600 clks @10MHz (sht=200) //using Temperature ADC
+uint_ws rand_fromADC(){ // about 9600 clks @10MHz (sht=200) //using Temperature ADC
 
 	adc12_ctrl_set(0, ADC_CH_TEMP, 15, 0, 0); // Temperature, 1.5V ref
 	adc12_init(12, 16, 0, ASRC_ADC, ADC_CONV_SS + 1);
 	// Resolution = 12bit, SHT = 200clks, Single chanel
 
-	uint8_t i = 16;
-	uint16_t res = 0;
+	uint8_t i = ARCH_CPU_WORDSIZE;
+	uint_ws res = 0;
 	do{
 		adc12_start();
 		res <<= 1;
@@ -48,7 +48,7 @@ uint16_t rand_fromADC(){ // about 9600 clks @10MHz (sht=200) //using Temperature
 #ifdef __MSP430_HAS_UCS__
 #include "pwm/pwm_obj.h"
 #include "hw_obj.h"
-uint16_t rand_fromVLO(pwm_handle TA){ // about 8500 clks @10MHz // using VLO x DCO (-> REF)
+uint_ws rand_fromVLO(pwm_handle TA){ // about 8500 clks @10MHz // using VLO x DCO (-> REF)
 	/*
 	 * This suppose to use TimerA because TAx.2 - CCI_B = TACLK,
 	 * Using Timer/CC configuration from pwm_obj.h
@@ -62,8 +62,8 @@ uint16_t rand_fromVLO(pwm_handle TA){ // about 8500 clks @10MHz // using VLO x D
 	*TA->CTL = TASSEL_2 + MC_2;  // TA SRC = SMCLK
 	*TACCTL_ptr = CM_3 + CCIS_1 + CAP; // TACCR capture ACLK
 	
-	uint8_t i = 16;
-	uint16_t res = 0;
+	uint8_t i = ARCH_CPU_WORDSIZE;
+	uint_ws res = 0;
 	do{
 		*TACCTL_ptr &= ~CCIFG;
 		res <<= 1;
@@ -80,7 +80,7 @@ uint16_t rand_fromVLO(pwm_handle TA){ // about 8500 clks @10MHz // using VLO x D
 }
 
 #else
-uint16_t rand_fromVLO(){ // using VLO x DCO
+uint_ws rand_fromVLO(){ // using VLO x DCO
 	
 	uint16_t prev_BCSCTL1 = BCSCTL1;
 	uint16_t prev_BCSCTL3 = BCSCTL3;
@@ -91,8 +91,8 @@ uint16_t rand_fromVLO(){ // using VLO x DCO
 	TA0CTL = TASSEL_2 + MC_2;  // TA SRC = SMCLK
 	TA0CCTL0 = CM_3 + CCIS_1 + CAP; // TACCR capture ACLK
 	
-	uint8_t i = 16;
-	uint16_t res = 0;
+	uint8_t i = ARCH_CPU_WORDSIZE;
+	uint_ws res = 0;
 	do{
 		TA0CCTL0 &= ~CCIFG;
 		res <<= 1;

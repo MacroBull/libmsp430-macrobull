@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
+#include "arch.h"
 #include "binutil/base64.h"
 
 #define CASE_JSON_END_CHARS case '\0':case ',':case '}':case ']'
@@ -17,7 +18,7 @@
 
 extern inline char *strcpyR(char *dest, const char *source);
 
-extern inline char *itoa10R(char *buf, int16_t num);
+extern inline char *itoa10R(char *buf, int_ws num);
 
 //extern inline void json_clearify(char *s);
 
@@ -49,7 +50,7 @@ typedef struct json_struct {
 
 	uint8_t type;		/* The type of the item, as above. */
 
-	int16_t val_int;	/* The item's int number, or the length of blob, if it is */
+	int_ws val_int;	/* The item's int number, or the length of blob, if it is */
 	void *val_tar;		/* The target: string, blob or child */
 	
 	char *name;			/* The item's name string. */
@@ -60,11 +61,11 @@ typedef json_obj *json_handle;
 
 extern json_handle json_createValueObj(char *name, uint8_t type);
 
-extern json_handle json_createIntObj(char *name, int16_t num);
+extern json_handle json_createIntObj(char *name, int_ws num);
 
 extern json_handle json_createStringObj(char *name, char *string);
 
-extern json_handle json_createBlobObj(char *name, uint8_t *blob, int16_t len);
+extern json_handle json_createBlobObj(char *name, uint8_t *blob, int_ws len);
 
 extern json_handle json_createArrayObj(char *name, ...);
 
@@ -74,14 +75,14 @@ extern void json_insertArrayObj(json_handle this, ...);
 
 extern void json_insertObjectObj(json_handle this, ...);
 
-extern uint16_t json_free(json_handle obj);
-extern uint16_t json_free_rude(json_handle obj);
+extern uint_ws json_free(json_handle obj);
+extern uint_ws json_free_rude(json_handle obj);
 
-extern json_handle json_arrayIndex(json_handle obj, uint16_t index);
+extern json_handle json_arrayIndex(json_handle obj, uint_ws index);
 
 extern json_handle json_objectIndex(json_handle obj, char *name);
 
-extern uint16_t json_dump(char *buf, json_handle jObj);
+extern uint_ws json_dump(char *buf, json_handle jObj);
 
 extern char *json_parseR(json_handle this, char *s);
 
