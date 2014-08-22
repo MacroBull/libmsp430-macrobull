@@ -7,7 +7,7 @@
 
 #include "arch.h"
 
-#if defined(__MSP430_HAS_ADC12__) || defined(__MSP430_HAS_ADC12_PLUS__)
+#if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_PLUS__) || defined(__MSP430_HAS_ADC12__) || defined(__MSP430_HAS_ADC12_PLUS__)
 extern uint_ws rand_fromADC();
 #endif
 
