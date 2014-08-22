@@ -35,8 +35,11 @@ extern void spi_init(spi_handle this, uint32_t freq, uint32_t baud, uint8_t mode
 extern inline char spi__transmit8(spi_handle this, char c);
 extern inline int spi__transmit16(spi_handle this, int n);
 
-extern void spi_write(spi_handle this,  char *data, uint16_t cnt);
-extern char *spi_read(spi_handle this, char *buf, uint16_t max_cnt);
+extern inline char spi_transmit8(spi_handle this, char c);
+extern inline int spi_transmit16(spi_handle this, int n);
+
+//extern void spi_write(spi_handle this,  char *data, uint16_t cnt);
+//extern char *spi_read(spi_handle this, char *buf, uint16_t max_cnt);
 
 extern char spi_reg8_read8(spi_handle this, char addr, uint16_t wait);
 extern int spi_reg8_read16(spi_handle this, char addr, uint16_t wait);

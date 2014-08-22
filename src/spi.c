@@ -82,6 +82,22 @@ inline int spi__transmit16(spi_handle this, int n){
 	return r + *this->RXBUF;
 	
 }
+
+char spi_transmit8(spi_handle this, char c){
+	char r;
+	spi_XLED_on(this);
+	r = spi__transmit8(this, c);
+	spi_XLED_off(this);
+	return r;
+}
+
+int spi_transmit16(spi_handle this, int n){
+	int r;
+	spi_XLED_on(this);
+	r = spi__transmit16(this, n);
+	spi_XLED_off(this);
+	return r;
+}
 /*
 void spi_write(spi_handle this,  char *data, uint16_t cnt){
 	char *p;
@@ -190,11 +206,12 @@ void spi_reg16_write16(spi_handle this, uint16_t addr, int val, uint16_t wait){
 }
 
 //////////////////CCS Low-level/////////////////
-inline char ccsSpiTransmit8(spi_handle this, char c){
+// inline char ccsSpiTransmit8(spi_handle this, char c){
+// 
+// 	spi_TX_wait(this);
+// 	*this->TXBUF = c;
+// 	spi_RX_wait(this);
+// 	return *this->RXBUF;
+// }
 
-	spi_TX_wait(this);
-	*this->TXBUF = c;
-	spi_RX_wait(this);
-	return *this->RXBUF;
-}
 
