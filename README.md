@@ -1,7 +1,7 @@
 MacroBull的MSP430代码库
 ===========
 
-包含:
+包含一些外设抽象层, 板级配置 和 一些实用算法与工具:
 
 * 完善易用的, 为平台优化的JSON库, 提供JSON对象创建, 释放, 插入, 数组下标查找, 对象键值查找, 字符串转换功能, 为嵌入式平台提供最低开销的JSON动态操作方法; 通过使用这一cJSON库, 免除了数据输出格式顾虑, 使嵌入式平台能直接与高级语言接口进行数据交互, 极大提升高级语言端开发效率和交互可靠性.
 
@@ -21,7 +21,7 @@ MacroBull的MSP430代码库
 
 * I2C接口操作, 包含I2C主模式下的: 接口配置, 指示LED配置, I2C连续读/写方法, I2C芯片寄存器形式的读写操作.
 
-* 中断回调整合, 通过以中断向量和相关上下文为参数的调用绑定的回调函数队列, 通过回调函数返回值设置中断退出SP状态.
+* 中断回调整合, 通过以中断向量和相关上下文为参数的调用绑定的回调函数队列, 通过回调函数返回值设置中断退出时SP寄存器状态.
 
 * 为平台优化的qprintf字符串格式化输出库, 提供较printf更加精简高效的, 面向UART的实现.
 
@@ -75,10 +75,10 @@ MacroBull的MSP430代码库
 MacroBull's MSP430 lib
 ===========
 
-My MSP430 lib
+My MSP430 lib, providing several peripheral abstract layers, board configuration, data process algorithm and many utilities.
 
 
-* Useful JSON creating, parsing and dumping tool's to make mcu exchange data with high-level programming language interface more easily.
+* Useful and optimized JSON implementation including creating, indexing, inserting, parsing and dumping tool's to make mcu exchange data with high-level programming language interface more easily.
 
 * 4 Timer in a same form PWM object makes PWM settings simple, with SPWM data preseted.
 
