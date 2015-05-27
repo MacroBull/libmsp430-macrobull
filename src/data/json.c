@@ -1,5 +1,9 @@
-
+	
+#include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
+
+#include "binutil/base64.h"
 #include "data/json.h"
 
 inline char *strcpyR(char *dest, const char *source){ 
@@ -219,12 +223,13 @@ uint_ws json_free(json_handle this){
 	uint_ws cnt = 0;
 	
 	while (JSON_NULL_PTR != this){
-		if (NULL != this->name) free(this->name);
+// 		if (NULL != this->name) free(this->name);
 		if ((this->type & (JSON_OBJECT | JSON_ARRAY)) && (JSON_NULL_PTR != this -> val_tar)) // crawl in children
 			cnt += json_free(this->val_tar);
 		prev = this;
 		this = this->next;
 		free(prev);
+		prev = JSON_NULL_PTR;
 		cnt++;
 	}
 	return cnt;
@@ -238,15 +243,18 @@ uint_ws json_free_rude(json_handle this){
 	uint_ws cnt = 0;
 	
 	while (JSON_NULL_PTR != this){
-		if (NULL != this->name) free(this->name);
-		if (JSON_NULL_PTR != this -> val_tar)
+// 		if (NULL != this->name) free(this->name);
+		if (JSON_NULL_PTR != this -> val_tar) {
 			if (this->type & (JSON_OBJECT | JSON_ARRAY)) // crawl in children
 				cnt += json_free_rude(this->val_tar);
-			else
+			else if ((this->type == JSON_STRING) || (this->type == JSON_BLOB)){
 				free(this->val_tar);
+			}
+		}
 		prev = this;
 		this = this->next;
 		free(prev);
+		prev = JSON_NULL_PTR;
 		cnt++;
 	}
 	return cnt;
@@ -359,20 +367,22 @@ char *json_parseR(json_handle this, char *s){
 	json_handle curr, next;
 	
 	sp_head = JSON_NULL_PTR;
-	while (*s){
+	while (1) {
 		switch (*s){
+			CASE_JSON_SPLIT_CHARS:
 			CASE_JSON_END_CHARS:
 			if (sp_head){ // handling special values
 				if (('t' == *sp_head)&&('r' == *(sp_head+1))&&
 					('u' == *(sp_head+2))&&('e' == *(sp_head+3)))
-					this->type = (this->type & JSON_ATTR_MASK) | JSON_TRUE;
+					this->type = JSON_TRUE;
 				else if (('f' == *sp_head)&&('a' == *(sp_head+1))&&
 					('l' == *(sp_head+2))&&('s' == *(sp_head+3))&&
 					('e' == *(sp_head+4)))
-					this->type = (this->type & JSON_ATTR_MASK) | JSON_FALSE;
+					this->type = JSON_FALSE;
 				else if (('n' == *sp_head)&&('u' == *(sp_head+1))&&
 					('l' == *(sp_head+2))&&('l' == *(sp_head+3)))
-					this->type = (this->type & JSON_ATTR_MASK) | JSON_NULL;
+					this->type = JSON_NULL;
+// 					this->type = (this->type & JSON_ATTR_MASK) | JSON_NULL;
 			}
 			return s+1;
 			
@@ -382,31 +392,49 @@ char *json_parseR(json_handle this, char *s){
 			
 			
 			case	'{': // handling object
+				this->type = (this->type & JSON_ATTR_MASK) |JSON_OBJECT;
 				s++;
-				next = JSON_NULL_PTR;
-				while ('}' != *(s-1)){
+				if (('}' == *s) || ('\0' == *s)) {
+					this->val_tar = JSON_NULL_PTR;
+				}
+				else {
 					curr = json_createValueObj(NULL, JSON_NULL);
 					s = json_parseR(curr, s);
 					curr -> type |= JSON_IN_OBJECT;
-					curr -> next = next;
-					next = curr;
+					curr -> next = JSON_NULL_PTR;
+					this->val_tar = curr;
+					while (!(('}' == *(s-1)) || ('\0' == *(s-1)))){
+						next = json_createValueObj(NULL, JSON_NULL);
+						s = json_parseR(next, s);
+						next -> type |= JSON_IN_OBJECT;
+						next -> next = JSON_NULL_PTR;
+						curr -> next = next;
+						curr = next;
+					}
 				}
-				this->type = (this->type & JSON_ATTR_MASK) |JSON_OBJECT;
-				this->val_tar = next;
 				break;
 				
 			case	'[': // handling array
+				this->type = (this->type & JSON_ATTR_MASK) | JSON_ARRAY;
 				s++;
-				next = JSON_NULL_PTR;
-				while (']' != *(s-1)){
+				if ((']' == *s) || ('\0' == *s)) {
+					this->val_tar = JSON_NULL_PTR;
+				}
+				else {
 					curr = json_createValueObj(NULL, JSON_NULL);
 					s = json_parseR(curr, s);
 					curr -> type |= JSON_IN_ARRAY;
-					curr -> next = next;
-					next = curr;
+					curr -> next = JSON_NULL_PTR;
+					this->val_tar = curr;
+					while (!((']' == *(s-1)) || ('\0' == *(s-1)))){
+						next = json_createValueObj(NULL, JSON_NULL);
+						s = json_parseR(next, s);
+						next -> type |= JSON_IN_ARRAY;
+						next -> next = JSON_NULL_PTR;
+						curr -> next = next;
+						curr = next;
+					}
 				}
-				this->type = (this->type & JSON_ATTR_MASK) | JSON_ARRAY;
-				this->val_tar = next;
 				break;
 				
 			case	'"': // handling string / name
@@ -420,7 +448,7 @@ char *json_parseR(json_handle this, char *s){
 				s = p_s +1;
 				break;
 				
-			CASE_JSON_NUM_CHARS: // handling int number, int16_t only
+			CASE_JSON_NUM_CHARS: // handling int number
 				this->type = (this->type & JSON_ATTR_MASK) | JSON_INT;
 				p_s = s+1;
 				while ((*p_s <='9')&&(*p_s>='0')) p_s++;

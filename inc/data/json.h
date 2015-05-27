@@ -3,22 +3,19 @@
 #ifndef __JSON_H
 #define __JSON_H
 
-#include <msp430.h>
 #include <stdint.h>
 
-#include <stdlib.h>
-#include <stdarg.h>
-
 #include "arch.h"
-#include "binutil/base64.h"
 
-#define CASE_JSON_END_CHARS case '\0':case ',':case '}':case ']'
+
+#define CASE_JSON_END_CHARS case '\0':case '}':case ']'
+#define CASE_JSON_SPLIT_CHARS case ','
 #define CASE_JSON_ESCAPE_CHARS case ' ':case '\t':case '\r':case '\n'
 #define CASE_JSON_NUM_CHARS case '-':case '0':case '1':case '2':case '3':case '4':case '5':case '6':case '7':case '8':case '9'
 
-extern inline char *strcpyR(char *dest, const char *source);
+// extern inline char *strcpyR(char *dest, const char *source);
 
-extern inline char *itoa10R(char *buf, int_ws num);
+// extern inline char *itoa10R(char *buf, int_ws num);
 
 //extern inline void json_clearify(char *s);
 
@@ -29,8 +26,8 @@ extern inline char *itoa10R(char *buf, int_ws num);
 #define JSON_STRING	2
 #define JSON_BLOB	3
 
-#define JSON_FALSE	0x40
-#define JSON_TRUE	0x41
+#define JSON_FALSE	4
+#define JSON_TRUE	5
 
 /* attribute/role*/
 #define JSON_IN_OBJECT	0x10
